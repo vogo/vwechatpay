@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package vwxpartner
+package vwxapply4sub
 
 import (
 	"github.com/vogo/vwechatpay"

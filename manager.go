@@ -21,6 +21,7 @@ import (
 	"context"
 	"crypto/rsa"
 	"crypto/x509"
+	"fmt"
 
 	"github.com/vogo/vogo/vlog"
 	"github.com/vogo/vogo/vos"
@@ -39,6 +40,7 @@ type PlatManager interface {
 
 var PlatManagerInit func(mgr *Manager) PlatManager
 
+// Manager 微信支付管理类,包含微信支付客户端和商户信息.
 type Manager struct {
 	runner             *vrun.Runner
 	Config             *Config
@@ -80,7 +82,17 @@ func NewManager(cfg *Config) (*Manager, error) {
 	return mgr, nil
 }
 
-func NewManagerFromEnv() (*Manager, error) {
+func NewManagerFromEnv() (_mgr *Manager, _err error) {
+	defer func() {
+		if err := recover(); err != nil {
+			if e, ok := err.(error); ok {
+				_err = e
+			} else {
+				_err = fmt.Errorf("new manager from env error: %v", err)
+			}
+		}
+	}()
+
 	cfg := &Config{
 		MerchantID:           vos.EnsureEnvString("WECHAT_PAY_MERCHANT_ID"),
 		MerchantCertSerialNO: vos.EnsureEnvString("WECHAT_PAY_MERCHANT_CERT_SERIAL_NO"),
