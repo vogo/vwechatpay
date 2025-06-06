@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package wxpartnerpays
+package vwxpartner
 
 import (
 	"context"
@@ -28,28 +28,33 @@ import (
 
 // TestSubmitApplyment 提交申请单示例
 func TestSubmitApplyment(t *testing.T) {
-	client := NewPartnerPayClient(vwechatpay.NewManagerFromEnv())
+	mgr, err := vwechatpay.NewManagerFromEnv()
+	if err != nil {
+		t.Errorf("初始化微信支付失败: %v", err)
+		return
+	}
+	client := NewPartnerClient(mgr)
 
 	// 准备请求参数
 	ctx := context.Background()
 
 	// 加密敏感信息
-	contactName, err := client.manager.EncryptSensitiveInfo(ctx, "张三")
+	contactName, err := client.mgr.PlatManager.Encrypt("张三")
 	if err != nil {
 		log.Fatalf("加密联系人姓名失败: %v", err)
 	}
 
-	contactIDNumber, err := client.manager.EncryptSensitiveInfo(ctx, "110101199003070073")
+	contactIDNumber, err := client.mgr.PlatManager.Encrypt("110101199003070073")
 	if err != nil {
 		log.Fatalf("加密联系人身份证号失败: %v", err)
 	}
 
-	mobilePhone, err := client.manager.EncryptSensitiveInfo(ctx, "13900000000")
+	mobilePhone, err := client.mgr.PlatManager.Encrypt("13900000000")
 	if err != nil {
 		log.Fatalf("加密手机号失败: %v", err)
 	}
 
-	contactEmail, err := client.manager.EncryptSensitiveInfo(ctx, "test@example.com")
+	contactEmail, err := client.mgr.PlatManager.Encrypt("test@example.com")
 	if err != nil {
 		log.Fatalf("加密邮箱失败: %v", err)
 	}
@@ -112,8 +117,12 @@ func TestSubmitApplyment(t *testing.T) {
 
 // ExampleQueryApplyment 查询申请单状态示例
 func TestQueryApplyment(t *testing.T) {
-	cli := vwechatpay.NewManagerFromEnv()
-	client := NewPartnerPayClient(cli)
+	mgr, err := vwechatpay.NewManagerFromEnv()
+	if err != nil {
+		t.Errorf("初始化微信支付失败: %v", err)
+		return
+	}
+	client := NewPartnerClient(mgr)
 
 	// 准备请求参数
 	ctx := context.Background()

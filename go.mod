@@ -4,7 +4,7 @@ go 1.24.1
 
 require (
 	github.com/stretchr/testify v1.10.0
-	github.com/vogo/vogo v0.0.0-20250601092625-56b77e515507
+	github.com/vogo/vogo v0.0.0-20250606015745-fbb6b7788c48
 	github.com/wechatpay-apiv3/wechatpay-go v0.2.20
 )
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package vpayutils
+package vwxutils
 
 import (
 	"crypto"

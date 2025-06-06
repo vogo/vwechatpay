@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package wxpartnerpays
+package vwxpartner
 
 import (
 	"github.com/vogo/vwechatpay"
@@ -35,14 +35,14 @@ const (
 	ApplymentQueryByApplymentIDURL = APIBaseURL + "/v3/applyment4sub/applyment/applyment_id/%d"
 )
 
-// PartnerPayClient 微信支付客户端
-type PartnerPayClient struct {
-	manager *vwechatpay.WechatPayManager
+// PartnerClient 微信支付客户端
+type PartnerClient struct {
+	mgr *vwechatpay.Manager
 }
 
-// NewPartnerPayClient 创建微信支付客户端
-func NewPartnerPayClient(manager *vwechatpay.WechatPayManager) *PartnerPayClient {
-	return &PartnerPayClient{
-		manager: manager,
+// NewPartnerClient 创建微信支付客户端
+func NewPartnerClient(mgr *vwechatpay.Manager) *PartnerClient {
+	return &PartnerClient{
+		mgr: mgr,
 	}
 }

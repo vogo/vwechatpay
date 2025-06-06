@@ -15,22 +15,4 @@
  * limitations under the License.
  */
 
-package vjsapipays
-
-type JsApiPayParams struct {
-	AppID     *string `json:"appId"`
-	TimeStamp *string `json:"timeStamp"`
-	NonceStr  *string `json:"nonceStr"`
-	Package   *string `json:"package"`
-	SignType  *string `json:"signType"`
-	PaySign   *string `json:"paySign"`
-	PayNo     *string `json:"payNo"`
-}
-
-type wechatPayHeader struct {
-	RequestID string
-	Serial    string
-	Signature string
-	Nonce     string
-	Timestamp int64
-}
+package vwxconsts

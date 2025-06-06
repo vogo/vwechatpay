@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package wxpartnerpays
+package vwxpartner
 
 // 小微商户进件相关的数据模型
 

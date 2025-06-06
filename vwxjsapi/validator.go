@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package vjsapipays
+package vwxjsapi
 
 import (
 	"context"
@@ -25,7 +25,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/vogo/vwechatpay/vpayconsts"
 	"github.com/wechatpay-apiv3/wechatpay-go/core/consts"
 )
 
@@ -41,7 +40,7 @@ func (s *JsApiClient) ValidateHTTPMessage(ctx context.Context, headerFetcher fun
 
 	message := buildMessage(ctx, headerArgs, body)
 
-	if err = s.manager.Verifier.Verify(ctx, headerArgs.Serial, message, headerArgs.Signature); err != nil {
+	if err = s.mgr.PlatManager.LoadVerifier().Verify(ctx, headerArgs.Serial, message, headerArgs.Signature); err != nil {
 		return fmt.Errorf(
 			"validate verify fail serial=[%s] request-id=[%s] err=%w",
 			headerArgs.Serial, headerArgs.RequestID, err,
@@ -53,7 +52,7 @@ func (s *JsApiClient) ValidateHTTPMessage(ctx context.Context, headerFetcher fun
 
 // getWechatPayHeader 从 http.Header 中获取 wechatPayHeader 信息
 func getWechatPayHeader(headerFetcher func(string) string) (wechatPayHeader, error) {
-	requestID := strings.TrimSpace(headerFetcher(vpayconsts.RequestID))
+	requestID := strings.TrimSpace(headerFetcher(consts.RequestID))
 
 	getHeaderString := func(key string) (string, error) {
 		val := strings.TrimSpace(headerFetcher(key))
@@ -80,19 +79,19 @@ func getWechatPayHeader(headerFetcher func(string) string) (wechatPayHeader, err
 	}
 	var err error
 
-	if ret.Serial, err = getHeaderString(vpayconsts.WechatPaySerial); err != nil {
+	if ret.Serial, err = getHeaderString(consts.WechatPaySerial); err != nil {
 		return ret, err
 	}
 
-	if ret.Signature, err = getHeaderString(vpayconsts.WechatPaySignature); err != nil {
+	if ret.Signature, err = getHeaderString(consts.WechatPaySignature); err != nil {
 		return ret, err
 	}
 
-	if ret.Timestamp, err = getHeaderInt64(vpayconsts.WechatPayTimestamp); err != nil {
+	if ret.Timestamp, err = getHeaderInt64(consts.WechatPayTimestamp); err != nil {
 		return ret, err
 	}
 
-	if ret.Nonce, err = getHeaderString(vpayconsts.WechatPayNonce); err != nil {
+	if ret.Nonce, err = getHeaderString(consts.WechatPayNonce); err != nil {
 		return ret, err
 	}
 

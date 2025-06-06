@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package vwechatpay
+package vwxcert
 
 import (
 	"testing"
@@ -23,7 +23,9 @@ import (
 	"github.com/wechatpay-apiv3/wechatpay-go/utils"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/vogo/vogo/vlog"
 	"github.com/vogo/vogo/vos"
+	"github.com/vogo/vwechatpay"
 )
 
 func TestLoadCert(t *testing.T) {
@@ -35,8 +37,12 @@ func TestLoadCert(t *testing.T) {
 		t.Skip("skip test, env not found")
 	}
 
-	cli := NewManagerFromEnv()
-	cert := LoadPlatformCert(cli)
+	mgr, err := vwechatpay.NewManagerFromEnv()
+	if err != nil {
+		vlog.Fatal(err)
+	}
+	cli := NewPlatformManager(mgr)
+	cert := cli.LoadCert()
 	assert.Nil(t, cert)
 }
 

@@ -23,6 +23,6 @@ type Config struct {
 	MerchantCertSerialNO string `json:"merchant_cert_serial_no"` // 商户证书序列号
 	MerchantAPIv3Key     string `json:"merchant_api_v3_key"`     // 商户APIv3密钥
 	PrivateKeyPath       string `json:"private_key_path"`        // 私钥文件路径
-	CertPath             string `json:"cert_path"`
-	AppID                string `json:"app_id"` // 应用ID
+	CertPath             string `json:"cert_path"`               // 证书文件路径
+	AppID                string `json:"app_id"`                  // 应用ID
 }

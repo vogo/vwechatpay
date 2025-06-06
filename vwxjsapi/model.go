@@ -15,12 +15,22 @@
  * limitations under the License.
  */
 
-package vpayconsts
+package vwxjsapi
 
-const (
-	WechatPayTimestamp = "Wechatpay-Timestamp" // 微信支付回包时间戳
-	WechatPayNonce     = "Wechatpay-Nonce"     // 微信支付回包随机字符串
-	WechatPaySignature = "Wechatpay-Signature" // 微信支付回包签名信息
-	WechatPaySerial    = "Wechatpay-Serial"    // 微信支付回包平台序列号
-	RequestID          = "Request-Id"          // 微信支付回包请求ID
-)
+type JsApiPayParams struct {
+	AppID     *string `json:"appId"`
+	TimeStamp *string `json:"timeStamp"`
+	NonceStr  *string `json:"nonceStr"`
+	Package   *string `json:"package"`
+	SignType  *string `json:"signType"`
+	PaySign   *string `json:"paySign"`
+	PayNo     *string `json:"payNo"`
+}
+
+type wechatPayHeader struct {
+	RequestID string
+	Serial    string
+	Signature string
+	Nonce     string
+	Timestamp int64
+}

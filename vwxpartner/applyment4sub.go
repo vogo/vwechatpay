@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package wxpartnerpays
+package vwxpartner
 
 import (
 	"bytes"
@@ -27,7 +27,7 @@ import (
 )
 
 // SubmitApplyment 提交申请单
-func (c *PartnerPayClient) SubmitApplyment(ctx context.Context, req *ApplymentRequest) (*ApplymentResponse, error) {
+func (c *PartnerClient) SubmitApplyment(ctx context.Context, req *ApplymentRequest) (*ApplymentResponse, error) {
 	// 准备请求体
 	reqBody, err := json.Marshal(req)
 	if err != nil {
@@ -35,7 +35,7 @@ func (c *PartnerPayClient) SubmitApplyment(ctx context.Context, req *ApplymentRe
 	}
 
 	// 发送请求
-	result, err := c.manager.Client.Post(ctx, ApplymentURL, bytes.NewBuffer(reqBody))
+	result, err := c.mgr.Client.Post(ctx, ApplymentURL, bytes.NewBuffer(reqBody))
 	if err != nil {
 		return nil, fmt.Errorf("submit applyment error: %w", err)
 	}
@@ -50,12 +50,12 @@ func (c *PartnerPayClient) SubmitApplyment(ctx context.Context, req *ApplymentRe
 }
 
 // QueryApplymentByBusinessCode 通过业务申请编号查询申请单状态
-func (c *PartnerPayClient) QueryApplymentByBusinessCode(ctx context.Context, businessCode string) (*ApplymentStatusResponse, error) {
+func (c *PartnerClient) QueryApplymentByBusinessCode(ctx context.Context, businessCode string) (*ApplymentStatusResponse, error) {
 	// 构建URL
 	url := fmt.Sprintf(ApplymentQueryByBusinessCodeURL, businessCode)
 
 	// 发送请求
-	result, err := c.manager.Client.Get(ctx, url)
+	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
 		return nil, fmt.Errorf("query applyment by business code error: %w", err)
 	}
@@ -70,12 +70,12 @@ func (c *PartnerPayClient) QueryApplymentByBusinessCode(ctx context.Context, bus
 }
 
 // QueryApplymentByApplymentID 通过申请单号查询申请单状态
-func (c *PartnerPayClient) QueryApplymentByApplymentID(ctx context.Context, applymentID int64) (*ApplymentStatusResponse, error) {
+func (c *PartnerClient) QueryApplymentByApplymentID(ctx context.Context, applymentID int64) (*ApplymentStatusResponse, error) {
 	// 构建URL
 	url := fmt.Sprintf(ApplymentQueryByApplymentIDURL, applymentID)
 
 	// 发送请求
-	result, err := c.manager.Client.Get(ctx, url)
+	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
 		return nil, fmt.Errorf("query applyment by applyment id error: %w", err)
 	}

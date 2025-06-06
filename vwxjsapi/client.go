@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package vjsapipays
+package vwxjsapi
 
 import (
 	"context"
@@ -31,14 +31,14 @@ import (
 )
 
 type JsApiClient struct {
-	manager *vwechatpay.WechatPayManager
-	JsApi   *jsapi.JsapiApiService
+	mgr   *vwechatpay.Manager
+	JsApi *jsapi.JsapiApiService
 }
 
-func NewJsApiClient(mgr *vwechatpay.WechatPayManager) *JsApiClient {
+func NewJsApiClient(mgr *vwechatpay.Manager) *JsApiClient {
 	return &JsApiClient{
-		manager: mgr,
-		JsApi:   &jsapi.JsapiApiService{Client: mgr.Client},
+		mgr:   mgr,
+		JsApi: &jsapi.JsapiApiService{Client: mgr.Client},
 	}
 }
 
@@ -46,8 +46,8 @@ func (s *JsApiClient) JsApiPayRequest(openId string, amount int64, outTradeNo, d
 	ctx := context.Background()
 
 	prepayRequest := jsapi.PrepayRequest{
-		Appid:       core.String(s.manager.Config.AppID),
-		Mchid:       core.String(s.manager.Config.MerchantID),
+		Appid:       core.String(s.mgr.Config.AppID),
+		Mchid:       core.String(s.mgr.Config.MerchantID),
 		Description: core.String(description),
 		OutTradeNo:  core.String(outTradeNo),
 		Attach:      core.String(attach),
@@ -102,7 +102,7 @@ func (s *JsApiClient) JsApiNotifyParseBody(body []byte) (*notify.Request, map[st
 	}
 
 	plaintext, err := utils.DecryptAES256GCM(
-		s.manager.Config.MerchantAPIv3Key, ret.Resource.AssociatedData, ret.Resource.Nonce, ret.Resource.Ciphertext,
+		s.mgr.Config.MerchantAPIv3Key, ret.Resource.AssociatedData, ret.Resource.Nonce, ret.Resource.Ciphertext,
 	)
 	if err != nil {
 		return ret, nil, fmt.Errorf("decrypt request error: %v", err)
