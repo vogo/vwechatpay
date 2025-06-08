@@ -80,7 +80,7 @@ func TestSubmitApplyment(t *testing.T) {
 		return
 	}
 
-	client := NewPartnerClient(mgr)
+	client := NewApply4SubClient(mgr)
 
 	// 准备请求参数
 	ctx := context.Background()
@@ -169,7 +169,7 @@ func TestQueryApplyment(t *testing.T) {
 		return
 	}
 
-	client := NewPartnerClient(mgr)
+	client := NewApply4SubClient(mgr)
 
 	// 准备请求参数
 	ctx := context.Background()
@@ -210,7 +210,7 @@ func TestSubmitApplymentWithOnlineInfo(t *testing.T) {
 		t.Errorf("初始化微信支付失败: %v", err)
 		return
 	}
-	client := NewPartnerClient(mgr)
+	client := NewApply4SubClient(mgr)
 
 	// 准备请求参数
 	ctx := context.Background()

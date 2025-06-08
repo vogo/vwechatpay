@@ -18,51 +18,45 @@
 package vwxapply4sub
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 
-	"github.com/vogo/vogo/vencoding/vjson"
+	"github.com/vogo/vogo/vlog"
 )
 
-// SubmitApplyment 提交申请单
-func (c *PartnerClient) SubmitApplyment(ctx context.Context, req *ApplymentRequest) (*ApplymentResponse, error) {
-	// 准备请求体
-	reqBody, err := json.Marshal(req)
-	if err != nil {
-		return nil, fmt.Errorf("marshal request body error: %w", err)
-	}
+const (
+	// ApplymentQueryByBusinessCodeURL 通过业务申请编号查询申请单状态URL
+	ApplymentQueryByBusinessCodeURL = APIBaseURL + "/v3/applyment4sub/applyment/business_code/%s"
 
-	// 发送请求
-	result, err := c.mgr.Client.Post(ctx, ApplymentURL, bytes.NewBuffer(reqBody))
-	if err != nil {
-		return nil, fmt.Errorf("submit applyment error: %w", err)
-	}
-
-	// 解析响应
-	var resp ApplymentResponse
-	if err := vjson.UnmarshalStream(result.Response.Body, &resp); err != nil {
-		return nil, fmt.Errorf("unmarshal response error: %w", err)
-	}
-
-	return &resp, nil
-}
+	// ApplymentQueryByApplymentIDURL 通过申请单号查询申请单状态URL
+	ApplymentQueryByApplymentIDURL = APIBaseURL + "/v3/applyment4sub/applyment/applyment_id/%d"
+)
 
 // QueryApplymentByBusinessCode 通过业务申请编号查询申请单状态
-func (c *PartnerClient) QueryApplymentByBusinessCode(ctx context.Context, businessCode string) (*ApplymentStatusResponse, error) {
+// businessCode: 业务申请编号
+// 返回值: 申请单状态响应, 错误信息
+func (c *Apply4SubClient) QueryApplymentByBusinessCode(ctx context.Context, businessCode string) (*ApplymentStatusResponse, error) {
 	// 构建URL
 	url := fmt.Sprintf(ApplymentQueryByBusinessCodeURL, businessCode)
 
-	// 发送请求
+	vlog.Infof("query applyment by business code: %s", businessCode)
+
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
 		return nil, fmt.Errorf("query applyment by business code error: %w", err)
 	}
 
-	// 解析响应
+	respBody, err := io.ReadAll(result.Response.Body)
+	if err != nil {
+		return nil, fmt.Errorf("read response body error: %w", err)
+	}
+
+	vlog.Infof("query applyment by business code response: %s", respBody)
+
 	var resp ApplymentStatusResponse
-	if err := vjson.UnmarshalStream(result.Response.Body, &resp); err != nil {
+	if err := json.Unmarshal(respBody, &resp); err != nil {
 		return nil, fmt.Errorf("unmarshal response error: %w", err)
 	}
 
@@ -70,19 +64,28 @@ func (c *PartnerClient) QueryApplymentByBusinessCode(ctx context.Context, busine
 }
 
 // QueryApplymentByApplymentID 通过申请单号查询申请单状态
-func (c *PartnerClient) QueryApplymentByApplymentID(ctx context.Context, applymentID int64) (*ApplymentStatusResponse, error) {
+// applymentID: 微信支付申请单号
+// 返回值: 申请单状态响应, 错误信息
+func (c *Apply4SubClient) QueryApplymentByApplymentID(ctx context.Context, applymentID int64) (*ApplymentStatusResponse, error) {
 	// 构建URL
 	url := fmt.Sprintf(ApplymentQueryByApplymentIDURL, applymentID)
 
-	// 发送请求
+	vlog.Infof("query applyment by applyment id: %d", applymentID)
+
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
 		return nil, fmt.Errorf("query applyment by applyment id error: %w", err)
 	}
 
-	// 解析响应
+	respBody, err := io.ReadAll(result.Response.Body)
+	if err != nil {
+		return nil, fmt.Errorf("read response body error: %w", err)
+	}
+
+	vlog.Infof("query applyment by applyment id response: %s", respBody)
+
 	var resp ApplymentStatusResponse
-	if err := vjson.UnmarshalStream(result.Response.Body, &resp); err != nil {
+	if err := json.Unmarshal(respBody, &resp); err != nil {
 		return nil, fmt.Errorf("unmarshal response error: %w", err)
 	}
 

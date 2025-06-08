@@ -24,25 +24,16 @@ import (
 const (
 	// APIBaseURL 微信支付API基础URL
 	APIBaseURL = "https://api.mch.weixin.qq.com"
-
-	// ApplymentURL 提交申请单URL
-	ApplymentURL = APIBaseURL + "/v3/applyment4sub/applyment/"
-
-	// ApplymentQueryByBusinessCodeURL 通过业务申请编号查询申请单状态URL
-	ApplymentQueryByBusinessCodeURL = APIBaseURL + "/v3/applyment4sub/applyment/business_code/%s"
-
-	// ApplymentQueryByApplymentIDURL 通过申请单号查询申请单状态URL
-	ApplymentQueryByApplymentIDURL = APIBaseURL + "/v3/applyment4sub/applyment/applyment_id/%d"
 )
 
-// PartnerClient 微信支付客户端
-type PartnerClient struct {
+// Apply4SubClient 微信支付客户端
+type Apply4SubClient struct {
 	mgr *vwechatpay.Manager
 }
 
-// NewPartnerClient 创建微信支付客户端
-func NewPartnerClient(mgr *vwechatpay.Manager) *PartnerClient {
-	return &PartnerClient{
+// NewApply4SubClient 创建进件申请客户端
+func NewApply4SubClient(mgr *vwechatpay.Manager) *Apply4SubClient {
+	return &Apply4SubClient{
 		mgr: mgr,
 	}
 }

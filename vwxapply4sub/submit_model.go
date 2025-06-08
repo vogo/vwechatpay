@@ -282,24 +282,3 @@ type AdditionInfo struct {
 	BusinessAdditionPics  []string `json:"business_addition_pics,omitempty"` // 补充材料
 	BusinessAdditionMsg   string   `json:"business_addition_msg,omitempty"`  // 补充说明
 }
-
-// ApplymentStatusRequest 查询申请单状态请求
-type ApplymentStatusRequest struct {
-	BusinessCode string `json:"business_code"` // 业务申请编号
-}
-
-// ApplymentStatusByIDRequest 通过申请单号查询申请单状态请求
-type ApplymentStatusByIDRequest struct {
-	ApplymentID int64 `json:"applyment_id"` // 微信支付申请单号
-}
-
-// ApplymentStatusResponse 查询申请单状态响应
-type ApplymentStatusResponse struct {
-	BusinessCode      string `json:"business_code"`       // 业务申请编号
-	ApplymentID       int64  `json:"applyment_id"`        // 微信支付申请单号
-	SubMchID          string `json:"sub_mchid"`           // 特约商户号
-	SignURL           string `json:"sign_url"`            // 超级管理员签约链接
-	ApplymentState    string `json:"applyment_state"`     // 申请单状态
-	ApplymentStateMsg string `json:"applyment_state_msg"` // 申请单状态描述
-	AuditDetail       string `json:"audit_detail"`        // 驳回原因详情
-}
