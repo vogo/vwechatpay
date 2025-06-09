@@ -39,7 +39,7 @@ func LoadConfigFromEnv() (*Config, error) {
 	cfg := &Config{
 		MerchantID:           vos.EnsureEnvString("WECHAT_PAY_MERCHANT_ID"),
 		MerchantCertSerialNO: vos.EnsureEnvString("WECHAT_PAY_MERCHANT_CERT_SERIAL_NO"),
-		MerchantAPIv3Key:     vos.EnsureEnvString("WECHAT_PAY_MERCHANT_API_V3_KEY"),
+		MerchantAPIv3Key:     vos.EnsureEnvString("WECHAT_PAY_MERCHANT_APIV3_KEY"),
 		AppID:                vos.EnsureEnvString("WECHAT_PAY_APP_ID"),
 
 		PrivateKeyPath:    vos.EnvString("WECHAT_PAY_PRIVATE_KEY_PATH"),
