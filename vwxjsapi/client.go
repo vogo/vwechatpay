@@ -63,7 +63,6 @@ func (s *JsApiClient) JsApiPayRequest(openId string, amount int64, outTradeNo, d
 	reqData, _ := json.Marshal(prepayRequest)
 	vlog.Infof("jsapi prepay request: %s", reqData)
 	resp, _, err := s.JsApi.PrepayWithRequestPayment(ctx, prepayRequest)
-
 	if err != nil {
 		vlog.Errorf("jsapi prepay failed: %v", err)
 		return nil, err
