@@ -140,7 +140,10 @@ func (c *CapitalClient) UpdateBankCache(ctx context.Context) error {
 		if resp.Count < limit {
 			break
 		}
+
+		offset = offset + limit
 	}
+
 	return nil
 }
 
