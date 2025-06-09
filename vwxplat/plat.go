@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package vwxcert
+package vwxplat
 
 import (
 	"context"
@@ -25,7 +25,6 @@ import (
 	"time"
 
 	"github.com/vogo/vogo/vlog"
-	"github.com/vogo/vwechatpay"
 	"github.com/vogo/vwechatpay/vwxutils"
 	"github.com/wechatpay-apiv3/wechatpay-go/core"
 	"github.com/wechatpay-apiv3/wechatpay-go/core/auth/verifiers"
@@ -33,30 +32,26 @@ import (
 	"github.com/wechatpay-apiv3/wechatpay-go/utils"
 )
 
-func init() {
-	vwechatpay.PlatManagerInit = func(mgr *vwechatpay.Manager) vwechatpay.PlatManager {
-		return NewPlatformManager(mgr)
-	}
-}
-
-type WxPlatManager struct {
+type PlatManager struct {
 	mux            sync.Mutex
-	mgr            *vwechatpay.Manager
+	client         *core.Client
+	apiV3Key       string
 	certificateApi certificates.CertificatesApiService
 	platformCert   *x509.Certificate
 	verifier       *verifiers.SHA256WithRSAVerifier
 	expireTime     time.Time
 }
 
-func NewPlatformManager(mgr *vwechatpay.Manager) *WxPlatManager {
-	return &WxPlatManager{
+func NewPlatManager(client *core.Client, apiV3Key string) *PlatManager {
+	return &PlatManager{
 		mux:            sync.Mutex{},
-		mgr:            mgr,
-		certificateApi: certificates.CertificatesApiService{Client: mgr.Client},
+		client:         client,
+		apiV3Key:       apiV3Key,
+		certificateApi: certificates.CertificatesApiService{Client: client},
 	}
 }
 
-func (c *WxPlatManager) LoadCert() *x509.Certificate {
+func (c *PlatManager) LoadCert() *x509.Certificate {
 	if c.platformCert != nil && c.expireTime.After(time.Now()) {
 		return c.platformCert
 	}
@@ -66,7 +61,7 @@ func (c *WxPlatManager) LoadCert() *x509.Certificate {
 	return c.platformCert
 }
 
-func (c *WxPlatManager) LoadVerifier() *verifiers.SHA256WithRSAVerifier {
+func (c *PlatManager) LoadVerifier() *verifiers.SHA256WithRSAVerifier {
 	if c.verifier != nil && c.expireTime.After(time.Now()) {
 		return c.verifier
 	}
@@ -76,7 +71,7 @@ func (c *WxPlatManager) LoadVerifier() *verifiers.SHA256WithRSAVerifier {
 	return c.verifier
 }
 
-func (c *WxPlatManager) reloadCert() {
+func (c *PlatManager) reloadCert() {
 	c.mux.Lock()
 	defer c.mux.Unlock()
 
@@ -94,7 +89,7 @@ func (c *WxPlatManager) reloadCert() {
 
 	// 解析返回数据获得公钥证书
 	encryptCert := resp.Data[0].EncryptCertificate
-	keyText, err := utils.DecryptAES256GCM(c.mgr.Config.MerchantAPIv3Key, *encryptCert.AssociatedData,
+	keyText, err := utils.DecryptAES256GCM(c.apiV3Key, *encryptCert.AssociatedData,
 		*encryptCert.Nonce, *encryptCert.Ciphertext)
 	if err != nil {
 		vlog.Fatalf("decrypt wechat platform merchantCert failed: %v", err)
@@ -114,7 +109,7 @@ func (c *WxPlatManager) reloadCert() {
 }
 
 // EncryptSensitiveInfo 使用微信支付平台证书加密敏感信息
-func (c *WxPlatManager) Encrypt(plaintext string) (string, error) {
+func (c *PlatManager) Encrypt(plaintext string) (string, error) {
 	// 确保平台证书已加载
 	platformCert := c.LoadCert()
 

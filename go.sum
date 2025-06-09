@@ -17,7 +17,6 @@ github.com/vogo/vogo v0.0.0-20250606015745-fbb6b7788c48 h1:gSDTKZxh8eBIPIKu0YgOi
 github.com/vogo/vogo v0.0.0-20250606015745-fbb6b7788c48/go.mod h1:gaCplto8XOVoHbN9nAGpEnqDT1s6hnNbfDpH0acra9c=
 github.com/wechatpay-apiv3/wechatpay-go v0.2.20 h1:gS8oFn1bHGnyapR2Zb4aqTV6l4kJWgbtqjCq6k1L9DQ=
 github.com/wechatpay-apiv3/wechatpay-go v0.2.20/go.mod h1:A254AUBVB6R+EqQFo3yTgeh7HtyqRRtN2w9hQSOrd4Q=
-gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=

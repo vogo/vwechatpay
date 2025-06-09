@@ -28,6 +28,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io"
+	"os"
 	"time"
 
 	"github.com/wechatpay-apiv3/wechatpay-go/utils"
@@ -148,4 +149,14 @@ func VerifySHA256WithRSA(message, signature string, publicKey *rsa.PublicKey) er
 	}
 
 	return rsa.VerifyPKCS1v15(publicKey, crypto.SHA256, hashed[:], signatureBytes)
+}
+
+// FileBase64 文件转base64
+// bash:  base64 -w 0 -i file.txt
+func FileBase64(path string) (string, error) {
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	return base64.StdEncoding.EncodeToString(b), nil
 }

@@ -21,24 +21,16 @@ import (
 	"context"
 	"crypto/rsa"
 	"crypto/x509"
+	"encoding/base64"
 	"fmt"
 
 	"github.com/vogo/vogo/vlog"
-	"github.com/vogo/vogo/vos"
 	"github.com/vogo/vogo/vsync/vrun"
+	"github.com/vogo/vwechatpay/vwxplat"
 	"github.com/wechatpay-apiv3/wechatpay-go/core"
-	"github.com/wechatpay-apiv3/wechatpay-go/core/auth/verifiers"
 	"github.com/wechatpay-apiv3/wechatpay-go/core/option"
 	"github.com/wechatpay-apiv3/wechatpay-go/utils"
 )
-
-type PlatManager interface {
-	LoadCert() *x509.Certificate
-	LoadVerifier() *verifiers.SHA256WithRSAVerifier
-	Encrypt(plaintext string) (string, error)
-}
-
-var PlatManagerInit func(mgr *Manager) PlatManager
 
 // Manager 微信支付管理类,包含微信支付客户端和商户信息.
 type Manager struct {
@@ -46,7 +38,7 @@ type Manager struct {
 	Config             *Config
 	merchantPrivateKey *rsa.PrivateKey
 	merchantCert       *x509.Certificate
-	PlatManager        PlatManager
+	PlatManager        *vwxplat.PlatManager
 	Client             *core.Client
 }
 
@@ -56,28 +48,26 @@ func NewManager(cfg *Config) (*Manager, error) {
 		Config: cfg,
 	}
 
-	privateKey, err := utils.LoadPrivateKeyWithPath(cfg.PrivateKeyPath)
+	var err error
+	mgr.merchantPrivateKey, err = loadPrivateKey(cfg)
 	if err != nil {
 		vlog.Errorf("load merchant private key error: %v", err)
 		return nil, err
 	}
-	mgr.merchantPrivateKey = privateKey
 
-	cert, err := utils.LoadCertificateWithPath(cfg.CertPath)
+	mgr.merchantCert, err = loadCert(cfg)
 	if err != nil {
 		vlog.Errorf("load merchant cert error: %v", err)
 		return nil, err
 	}
-	mgr.merchantCert = cert
 
-	cli, err := buildWechatPayClient(cfg, mgr.merchantPrivateKey)
+	mgr.Client, err = buildWechatPayClient(cfg, mgr.merchantPrivateKey)
 	if err != nil {
 		vlog.Errorf("build wechat pay client error: %v", err)
 		return nil, err
 	}
-	mgr.Client = cli
 
-	mgr.PlatManager = PlatManagerInit(mgr)
+	mgr.PlatManager = vwxplat.NewPlatManager(mgr.Client, cfg.MerchantAPIv3Key)
 
 	return mgr, nil
 }
@@ -93,13 +83,9 @@ func NewManagerFromEnv() (_mgr *Manager, _err error) {
 		}
 	}()
 
-	cfg := &Config{
-		MerchantID:           vos.EnsureEnvString("WECHAT_PAY_MERCHANT_ID"),
-		MerchantCertSerialNO: vos.EnsureEnvString("WECHAT_PAY_MERCHANT_CERT_SERIAL_NO"),
-		MerchantAPIv3Key:     vos.EnsureEnvString("WECHAT_PAY_MERCHANT_API_V3_KEY"),
-		PrivateKeyPath:       vos.EnsureEnvString("WECHAT_PAY_PRIVATE_KEY_PATH"),
-		CertPath:             vos.EnsureEnvString("WECHAT_PAY_CERT_PATH"),
-		AppID:                vos.EnsureEnvString("WECHAT_PAY_APP_ID"),
+	cfg, err := LoadConfigFromEnv()
+	if err != nil {
+		return nil, err
 	}
 
 	return NewManager(cfg)
@@ -116,4 +102,26 @@ func buildWechatPayClient(cfg *Config, key *rsa.PrivateKey) (*core.Client, error
 	}
 
 	return core.NewClient(ctx, opts...)
+}
+
+func loadPrivateKey(cfg *Config) (*rsa.PrivateKey, error) {
+	if cfg.PrivateKeyContent != "" {
+		b, err := base64.StdEncoding.DecodeString(cfg.PrivateKeyContent)
+		if err != nil {
+			return nil, err
+		}
+		return utils.LoadPrivateKey(string(b))
+	}
+	return utils.LoadPrivateKeyWithPath(cfg.PrivateKeyPath)
+}
+
+func loadCert(cfg *Config) (*x509.Certificate, error) {
+	if cfg.CertContent != "" {
+		b, err := base64.StdEncoding.DecodeString(cfg.CertContent)
+		if err != nil {
+			return nil, err
+		}
+		return utils.LoadCertificate(string(b))
+	}
+	return utils.LoadCertificateWithPath(cfg.CertPath)
 }
