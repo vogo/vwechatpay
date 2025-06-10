@@ -21,7 +21,6 @@ import (
 	"context"
 	"crypto/rsa"
 	"crypto/x509"
-	"encoding/base64"
 	"fmt"
 
 	"github.com/vogo/vogo/vlog"
@@ -104,24 +103,6 @@ func buildWechatPayClient(cfg *Config, key *rsa.PrivateKey) (*core.Client, error
 	return core.NewClient(ctx, opts...)
 }
 
-func loadPrivateKey(cfg *Config) (*rsa.PrivateKey, error) {
-	if cfg.PrivateKeyContent != "" {
-		b, err := base64.StdEncoding.DecodeString(cfg.PrivateKeyContent)
-		if err != nil {
-			return nil, err
-		}
-		return utils.LoadPrivateKey(string(b))
-	}
-	return utils.LoadPrivateKeyWithPath(cfg.PrivateKeyPath)
-}
-
-func loadCert(cfg *Config) (*x509.Certificate, error) {
-	if cfg.CertContent != "" {
-		b, err := base64.StdEncoding.DecodeString(cfg.CertContent)
-		if err != nil {
-			return nil, err
-		}
-		return utils.LoadCertificate(string(b))
-	}
-	return utils.LoadCertificateWithPath(cfg.CertPath)
+func (mgr *Manager) Sign(message string) (string, error) {
+	return utils.SignSHA256WithRSA(message, mgr.merchantPrivateKey)
 }

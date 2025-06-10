@@ -15,17 +15,32 @@
  * limitations under the License.
  */
 
-package main
+package vwxpartnerjsapi
 
 import (
-	"github.com/vogo/vwechatpay"
+	"context"
+	"fmt"
 )
 
-func main() {
-	mgr, err := vwechatpay.NewManagerFromEnv()
+// ValidateHTTPMessage 验证 HTTP 消息
+func (c *PartnerJsApiClient) ValidateHTTPMessage(ctx context.Context, headerFetcher func(string) string, body []byte) error {
+	headerArgs, err := getWechatPayHeader(headerFetcher)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	cert := mgr.PlatManager.LoadCert()
-	println(cert)
+
+	if err = checkWechatPayHeader(ctx, headerArgs); err != nil {
+		return err
+	}
+
+	message := buildMessage(ctx, headerArgs, body)
+
+	if err = c.mgr.PlatManager.LoadVerifier().Verify(ctx, headerArgs.Serial, message, headerArgs.Signature); err != nil {
+		return fmt.Errorf(
+			"validate verify fail serial=[%s] request-id=[%s] err=%w",
+			headerArgs.Serial, headerArgs.RequestID, err,
+		)
+	}
+
+	return nil
 }

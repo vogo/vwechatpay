@@ -18,9 +18,13 @@
 package vwechatpay
 
 import (
+	"crypto/rsa"
+	"crypto/x509"
+	"encoding/base64"
 	"fmt"
 
 	"github.com/vogo/vogo/vos"
+	"github.com/wechatpay-apiv3/wechatpay-go/utils"
 )
 
 // Config 微信支付配置
@@ -57,4 +61,26 @@ func LoadConfigFromEnv() (*Config, error) {
 	}
 
 	return cfg, nil
+}
+
+func loadPrivateKey(cfg *Config) (*rsa.PrivateKey, error) {
+	if cfg.PrivateKeyContent != "" {
+		b, err := base64.StdEncoding.DecodeString(cfg.PrivateKeyContent)
+		if err != nil {
+			return nil, err
+		}
+		return utils.LoadPrivateKey(string(b))
+	}
+	return utils.LoadPrivateKeyWithPath(cfg.PrivateKeyPath)
+}
+
+func loadCert(cfg *Config) (*x509.Certificate, error) {
+	if cfg.CertContent != "" {
+		b, err := base64.StdEncoding.DecodeString(cfg.CertContent)
+		if err != nil {
+			return nil, err
+		}
+		return utils.LoadCertificate(string(b))
+	}
+	return utils.LoadCertificateWithPath(cfg.CertPath)
 }
