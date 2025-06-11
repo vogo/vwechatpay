@@ -82,3 +82,19 @@ func (a *ApplymentStatusResponse) StateDetail() string {
 	}
 	return a.ApplymentStateMsg
 }
+
+func (a *ApplymentStatusResponse) IsFinished() bool {
+	return a.ApplymentState == "APPLYMENT_STATE_FINISHED"
+}
+
+func (a *ApplymentStatusResponse) IsRejected() bool {
+	return a.ApplymentState == "APPLYMENT_STATE_REJECTED"
+}
+
+func (a *ApplymentStatusResponse) HasError() bool {
+	return a.ApplymentState == "APPLYMENT_STATE_REJECTED" || a.ApplymentState == "APPLYMENT_STATE_EDITTING"
+}
+
+func (a *ApplymentStatusResponse) IsCanceled() bool {
+	return a.ApplymentState == "APPLYMENT_STATE_CANCELED"
+}
