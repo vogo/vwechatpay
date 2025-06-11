@@ -28,15 +28,15 @@ import (
 
 var microApplymentRequestDemo = &ApplymentRequest{
 	BusinessCode: "1900000001_10000", // 业务申请编号，服务商自定义
-	ContactInfo: ContactInfo{
+	ContactInfo: &ContactInfo{
 		ContactName:     "张三",                 // 联系人姓名
 		ContactIDNumber: "110101199003070073", // 联系人身份证号
 		MobilePhone:     "13900000000",        // 手机号
 		ContactEmail:    "EMAIL",              // 邮箱
 	},
-	SubjectInfo: SubjectInfo{
+	SubjectInfo: &SubjectInfo{
 		SubjectType: SubjectTypeMicro, // 小微商户固定为 SubjectTypeMicro
-		MicroBizInfo: MicroBizInfo{
+		MicroBizInfo: &MicroBizInfo{
 			MicroBizType: MicroTypeOnline, // 门店场所
 			MicroOnlineInfo: &MicroOnlineInfo{
 				MicroOnlineStore: "张三的小店",              // 线上店铺名称
@@ -56,15 +56,15 @@ var microApplymentRequestDemo = &ApplymentRequest{
 			},
 		},
 	},
-	BusinessInfo: BusinessInfo{
+	BusinessInfo: &BusinessInfo{
 		MerchantShortname: "张三的小店",       // 商户简称
 		ServicePhone:      "13900000000", // 客服电话
 	},
-	SettlementInfo: SettlementInfo{
+	SettlementInfo: &SettlementInfo{
 		SettlementID:      SettlementRuleIDMicro, // 入驻结算规则ID
 		QualificationType: "家政",                  // 所属行业
 	},
-	BankAccountInfo: BankAccountInfo{
+	BankAccountInfo: &BankAccountInfo{
 		BankAccountType: "BANK_ACCOUNT_TYPE_PERSONAL", // 账户类型，小微商户固定为 BANK_ACCOUNT_TYPE_PERSONAL
 		AccountName:     "张三",                         // 开户名称
 		AccountBank:     "工商银行",                       // 开户银行
@@ -109,16 +109,16 @@ func TestSubmitApplyment(t *testing.T) {
 	// 构建请求
 	req := &ApplymentRequest{
 		BusinessCode: "1900000001_10000", // 业务申请编号，服务商自定义
-		ContactInfo: ContactInfo{
+		ContactInfo: &ContactInfo{
 			ContactName:     contactName,
 			ContactIDNumber: contactIDNumber,
 			OpenID:          "oUpF8uMuAJO_M2pxb1Q9zNjWeS6o", // 超级管理员微信openid
 			MobilePhone:     mobilePhone,
 			ContactEmail:    contactEmail,
 		},
-		SubjectInfo: SubjectInfo{
+		SubjectInfo: &SubjectInfo{
 			SubjectType: SubjectTypeMicro, // 小微商户固定为 SubjectTypeMicro
-			MicroBizInfo: MicroBizInfo{
+			MicroBizInfo: &MicroBizInfo{
 				MicroBizType: MicroTypeStore, // 门店场所
 				MicroStoreInfo: &MicroStoreInfo{
 					MicroName:        "张三的小店",
@@ -129,18 +129,18 @@ func TestSubmitApplyment(t *testing.T) {
 				},
 			},
 		},
-		BusinessInfo: BusinessInfo{
+		BusinessInfo: &BusinessInfo{
 			MerchantShortname: "张三的小店",       // 商户简称
 			ServicePhone:      "13900000000", // 客服电话
-			SalesInfo:         SalesInfo{},   // 经营场景
+			SalesInfo:         &SalesInfo{},  // 经营场景
 		},
-		SettlementInfo: SettlementInfo{
+		SettlementInfo: &SettlementInfo{
 			SettlementID:        "719",      // 入驻结算规则ID
 			QualificationType:   "餐饮",       // 所属行业
 			Qualifications:      []string{}, // 特殊资质
 			BusinessAdditionPic: "",         // 补充材料
 		},
-		BankAccountInfo: BankAccountInfo{
+		BankAccountInfo: &BankAccountInfo{
 			BankAccountType: "BANK_ACCOUNT_TYPE_PERSONAL", // 账户类型，小微商户固定为 BANK_ACCOUNT_TYPE_PERSONAL
 			AccountName:     "张三",                         // 开户名称
 			AccountBank:     "工商银行",                       // 开户银行
@@ -259,16 +259,16 @@ func TestSubmitApplymentWithOnlineInfo(t *testing.T) {
 	// 构建请求
 	req := &ApplymentRequest{
 		BusinessCode: "1900013511_10000", // 业务申请编号，服务商自定义
-		ContactInfo: ContactInfo{
+		ContactInfo: &ContactInfo{
 			ContactName:     contactName,
 			ContactIDNumber: contactIDNumber,
 			OpenID:          "oUpF8uMuAJO_M2pxb1Q9zNjWeS6o", // 超级管理员微信openid
 			MobilePhone:     mobilePhone,
 			ContactEmail:    contactEmail,
 		},
-		SubjectInfo: SubjectInfo{
+		SubjectInfo: &SubjectInfo{
 			SubjectType: SubjectTypeMicro, // 小微商户固定为 SubjectTypeMicro
-			MicroBizInfo: MicroBizInfo{
+			MicroBizInfo: &MicroBizInfo{
 				MicroBizType: MicroTypeStore, // 门店场所
 				MicroStoreInfo: &MicroStoreInfo{
 					MicroName:        "大郎烧饼",
@@ -298,11 +298,11 @@ func TestSubmitApplymentWithOnlineInfo(t *testing.T) {
 				},
 			},
 		},
-		BusinessInfo: BusinessInfo{
+		BusinessInfo: &BusinessInfo{
 			MerchantShortname: "张三餐饮店",     // 商户简称
 			ServicePhone:      "0758XXXXX", // 客服电话
 		},
-		SettlementInfo: SettlementInfo{
+		SettlementInfo: &SettlementInfo{
 			SettlementID:         "703",                                    // 入驻结算规则ID
 			QualificationType:    "餐饮",                                     // 所属行业
 			Qualifications:       []string{"example_qualifications"},       // 特殊资质
@@ -312,7 +312,7 @@ func TestSubmitApplymentWithOnlineInfo(t *testing.T) {
 			CreditActivitiesRate: "0.6",                                    // 优惠费率活动值（贷记卡）
 			ActivitiesAdditions:  []string{"example_activities_additions"}, // 优惠费率活动补充材料
 		},
-		BankAccountInfo: BankAccountInfo{
+		BankAccountInfo: &BankAccountInfo{
 			BankAccountType: "BANK_ACCOUNT_TYPE_CORPORATE", // 账户类型
 			AccountName:     accountName,                   // 开户名称
 			AccountBank:     "工商银行",                        // 开户银行

@@ -31,13 +31,13 @@ const (
 
 // ApplymentRequest 提交申请单请求
 type ApplymentRequest struct {
-	BusinessCode    string          `json:"business_code"`           // 业务申请编号
-	ContactInfo     ContactInfo     `json:"contact_info"`            // 超级管理员信息
-	SubjectInfo     SubjectInfo     `json:"subject_info"`            // 主体资料
-	BusinessInfo    BusinessInfo    `json:"business_info"`           // 经营资料
-	SettlementInfo  SettlementInfo  `json:"settlement_info"`         // 结算规则
-	BankAccountInfo BankAccountInfo `json:"bank_account_info"`       // 结算银行账户
-	AdditionInfo    *AdditionInfo   `json:"addition_info,omitempty"` // 补充材料
+	BusinessCode    string           `json:"business_code"`           // 业务申请编号
+	ContactInfo     *ContactInfo     `json:"contact_info"`            // 超级管理员信息
+	SubjectInfo     *SubjectInfo     `json:"subject_info"`            // 主体资料
+	BusinessInfo    *BusinessInfo    `json:"business_info"`           // 经营资料
+	SettlementInfo  *SettlementInfo  `json:"settlement_info"`         // 结算规则
+	BankAccountInfo *BankAccountInfo `json:"bank_account_info"`       // 结算银行账户
+	AdditionInfo    *AdditionInfo    `json:"addition_info,omitempty"` // 补充材料
 }
 
 // ApplymentResponse 提交申请单响应
@@ -70,8 +70,8 @@ type SubjectInfo struct {
 	CertificateLetterCopy  string                  `json:"certificate_letter_copy,omitempty"`  // 单位证明函照片
 	FinanceInstitutionInfo *FinanceInstitutionInfo `json:"finance_institution_info,omitempty"` // 金融机构信息
 	IdentityInfo           *IdentityInfo           `json:"identity_info,omitempty"`            // 经营者/法人身份证件
-	UboInfoList            []UboInfo               `json:"ubo_info_list,omitempty"`            // 最终受益人信息列表
-	MicroBizInfo           MicroBizInfo            `json:"micro_biz_info"`                     // 小微商户经营者/法人身份证件
+	UboInfoList            []*UboInfo              `json:"ubo_info_list,omitempty"`            // 最终受益人信息列表
+	MicroBizInfo           *MicroBizInfo           `json:"micro_biz_info"`                     // 小微商户经营者/法人身份证件
 }
 
 // UboInfo 最终受益人信息
@@ -191,9 +191,9 @@ type MicroOnlineInfo struct {
 
 // BusinessInfo 经营资料
 type BusinessInfo struct {
-	MerchantShortname string    `json:"merchant_shortname"` // 商户简称
-	ServicePhone      string    `json:"service_phone"`      // 客服电话
-	SalesInfo         SalesInfo `json:"sales_info"`         // 经营场景
+	MerchantShortname string     `json:"merchant_shortname"` // 商户简称
+	ServicePhone      string     `json:"service_phone"`      // 客服电话
+	SalesInfo         *SalesInfo `json:"sales_info"`         // 经营场景
 }
 
 // SalesInfo 经营场景
