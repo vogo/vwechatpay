@@ -117,7 +117,7 @@ type FinanceInstitutionInfo struct {
 
 // IdentityInfo 经营者/法人身份证件
 type IdentityInfo struct {
-	IDHolderType        string      `json:"id_holder_type"`                  // 证件持有人类型
+	IDHolderType        string      `json:"id_holder_type"`                  // 证件持有人类型, LEGAL: 经营者/法人 SUPER: 经办人
 	IDDocType           string      `json:"id_doc_type"`                     // 证件类型, IDENTIFICATION_TYPE_IDCARD: 中国大陆居民-身份证
 	AuthorizeLetterCopy string      `json:"authorize_letter_copy,omitempty"` // 授权函照片
 	IDCardInfo          *IDCardInfo `json:"id_card_info,omitempty"`          // 身份证信息
