@@ -26,50 +26,56 @@ import (
 	"github.com/vogo/vwechatpay"
 )
 
-var microApplymentRequestDemo = &ApplymentRequest{
-	BusinessCode: "1900000001_10000", // 业务申请编号，服务商自定义
-	ContactInfo: &ContactInfo{
-		ContactName:     "张三",                 // 联系人姓名
-		ContactIDNumber: "110101199003070073", // 联系人身份证号
-		MobilePhone:     "13900000000",        // 手机号
-		ContactEmail:    "EMAIL",              // 邮箱
-	},
-	SubjectInfo: &SubjectInfo{
-		SubjectType: SubjectTypeMicro, // 小微商户固定为 SubjectTypeMicro
-		MicroBizInfo: &MicroBizInfo{
-			MicroBizType: MicroTypeOnline, // 门店场所
-			MicroOnlineInfo: &MicroOnlineInfo{
-				MicroOnlineStore: "张三的小店",              // 线上店铺名称
-				MicroEcName:      "XX购物平台",             // 电商平台名称
-				MicroLink:        "URL_ADDRESS.qq.com", // 线上店铺链接
+func TestMicroMerchantApplyment(t *testing.T) {
+	microApplymentRequestDemo := &ApplymentRequest{
+		BusinessCode: "1900000001_10000", // 业务申请编号，服务商自定义
+		ContactInfo: &ContactInfo{
+			ContactType:     "LEGAL",
+			ContactName:     "张三",                 // 联系人姓名
+			ContactIDNumber: "110101199003070073", // 联系人身份证号
+			MobilePhone:     "13900000000",        // 手机号
+			ContactEmail:    "EMAIL",              // 邮箱
+		},
+		SubjectInfo: &SubjectInfo{
+			SubjectType: SubjectTypeMicro, // 小微商户固定为 SubjectTypeMicro
+			MicroBizInfo: &MicroBizInfo{
+				MicroBizType: MicroTypeOnline, // 门店场所
+				MicroOnlineInfo: &MicroOnlineInfo{
+					MicroOnlineStore: "张三的小店",              // 线上店铺名称
+					MicroEcName:      "XX购物平台",             // 电商平台名称
+					MicroLink:        "URL_ADDRESS.qq.com", // 线上店铺链接
+				},
+			},
+			IdentityInfo: &IdentityInfo{
+				IDDocType:    "IDENTIFICATION_TYPE_IDCARD", // 证件类型
+				IDHolderType: "LEGAL",
+				IDCardInfo: &IDCardInfo{
+					IDCardCopy:      "xxx",                // 身份证人像面照片
+					IDCardNational:  "xxx",                // 身份证国徽面照片
+					IDCardName:      "张三",                 // 身份证姓名
+					IDCardNumber:    "110101199003070073", // 身份证号码
+					CardPeriodBegin: "2026-06-06",         // 身份证有效期开始时间
+					CardPeriodEnd:   "2026-06-06",         // 身份证有效期结束时间
+				},
 			},
 		},
-		IdentityInfo: &IdentityInfo{
-			IDDocType: "IDENTIFICATION_TYPE_IDCARD", // 证件类型
-			IDCardInfo: &IDCardInfo{
-				IDCardCopy:      "xxx",                // 身份证人像面照片
-				IDCardNational:  "xxx",                // 身份证国徽面照片
-				IDCardName:      "张三",                 // 身份证姓名
-				IDCardNumber:    "110101199003070073", // 身份证号码
-				CardPeriodBegin: "2026-06-06",         // 身份证有效期开始时间
-				CardPeriodEnd:   "2026-06-06",         // 身份证有效期结束时间
-			},
+		BusinessInfo: &BusinessInfo{
+			MerchantShortname: "张三的小店",       // 商户简称
+			ServicePhone:      "13900000000", // 客服电话
 		},
-	},
-	BusinessInfo: &BusinessInfo{
-		MerchantShortname: "张三的小店",       // 商户简称
-		ServicePhone:      "13900000000", // 客服电话
-	},
-	SettlementInfo: &SettlementInfo{
-		SettlementID:      SettlementRuleIDMicro, // 入驻结算规则ID
-		QualificationType: "家政",                  // 所属行业
-	},
-	BankAccountInfo: &BankAccountInfo{
-		BankAccountType: "BANK_ACCOUNT_TYPE_PERSONAL", // 账户类型，小微商户固定为 BANK_ACCOUNT_TYPE_PERSONAL
-		AccountName:     "张三",                         // 开户名称
-		AccountBank:     "工商银行",                       // 开户银行
-		AccountNumber:   "6212262201023557000",        // 银行账号
-	},
+		SettlementInfo: &SettlementInfo{
+			SettlementID:      SettlementRuleIDMicro, // 入驻结算规则ID
+			QualificationType: "家政",                  // 所属行业
+		},
+		BankAccountInfo: &BankAccountInfo{
+			BankAccountType: "BANK_ACCOUNT_TYPE_PERSONAL", // 账户类型，小微商户固定为 BANK_ACCOUNT_TYPE_PERSONAL
+			AccountName:     "张三",                         // 开户名称
+			AccountBank:     "工商银行",                       // 开户银行
+			AccountNumber:   "6212262201023557000",        // 银行账号
+		},
+	}
+
+	t.Log(microApplymentRequestDemo)
 }
 
 // TestSubmitApplyment 提交申请单示例
@@ -207,7 +213,7 @@ func TestQueryApplyment(t *testing.T) {
 func TestSubmitApplymentWithOnlineInfo(t *testing.T) {
 	mgr, err := vwechatpay.NewManagerFromEnv()
 	if err != nil {
-		t.Errorf("初始化微信支付失败: %v", err)
+		t.Skipf("初始化微信支付失败: %v", err)
 		return
 	}
 	client := NewApply4SubClient(mgr)
