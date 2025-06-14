@@ -43,7 +43,7 @@ func (c *PartnerJsApiClient) CloseOrder(ctx context.Context, subMchID, outTradeN
 	vlog.Infof("partner jsapi close order, subMchID: %s, outTradeNo: %s", subMchID, outTradeNo)
 
 	// 发送请求
-	result, err := c.jsapiApiService.CloseOrder(ctx, req)
+	result, err := c.jsapiApi.CloseOrder(ctx, req)
 	if err != nil {
 		vlog.Errorf("close order error: %v", err)
 		return err

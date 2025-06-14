@@ -15,25 +15,21 @@
  * limitations under the License.
  */
 
-package vwxpartnerjsapi
+package vwxjsapi
 
 import (
 	"github.com/vogo/vwechatpay"
-	"github.com/wechatpay-apiv3/wechatpay-go/services/partnerpayments/jsapi"
+	"github.com/wechatpay-apiv3/wechatpay-go/services/payments/jsapi"
 )
 
-// PartnerJsApiClient 服务商模式 JSAPI 支付客户端
-type PartnerJsApiClient struct {
-	mgr      *vwechatpay.Manager
-	jsapiApi *jsapi.JsapiApiService
+type JsApiClient struct {
+	mgr   *vwechatpay.Manager
+	jsApi *jsapi.JsapiApiService
 }
 
-// NewPartnerJsApiClient 创建服务商模式 JSAPI 支付客户端
-func NewPartnerJsApiClient(mgr *vwechatpay.Manager) *PartnerJsApiClient {
-	return &PartnerJsApiClient{
-		mgr: mgr,
-		jsapiApi: &jsapi.JsapiApiService{
-			Client: mgr.Client,
-		},
+func NewJsApiClient(mgr *vwechatpay.Manager) *JsApiClient {
+	return &JsApiClient{
+		mgr:   mgr,
+		jsApi: &jsapi.JsapiApiService{Client: mgr.Client},
 	}
 }

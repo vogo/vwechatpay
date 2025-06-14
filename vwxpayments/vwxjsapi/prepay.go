@@ -21,30 +21,18 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 
+	"github.com/vogo/vogo/vencoding/vjson"
 	"github.com/vogo/vogo/vlog"
-	"github.com/vogo/vwechatpay"
 	"github.com/wechatpay-apiv3/wechatpay-go/core"
-	"github.com/wechatpay-apiv3/wechatpay-go/core/notify"
 	"github.com/wechatpay-apiv3/wechatpay-go/services/payments/jsapi"
-	"github.com/wechatpay-apiv3/wechatpay-go/utils"
 )
 
-type JsApiClient struct {
-	mgr   *vwechatpay.Manager
-	JsApi *jsapi.JsapiApiService
-}
-
-func NewJsApiClient(mgr *vwechatpay.Manager) *JsApiClient {
-	return &JsApiClient{
-		mgr:   mgr,
-		JsApi: &jsapi.JsapiApiService{Client: mgr.Client},
-	}
-}
-
-func (s *JsApiClient) JsApiPayRequest(openId string, amount int64, outTradeNo, description, attach, callbackUrl string) (*JsApiPayParams, error) {
-	ctx := context.Background()
-
+func (s *JsApiClient) Prepay(ctx context.Context,
+	openId string, amount int64,
+	outTradeNo, description, attach, callbackUrl string,
+) (*JsApiPayParams, error) {
 	prepayRequest := jsapi.PrepayRequest{
 		Appid:       core.String(s.mgr.Config.AppID),
 		Mchid:       core.String(s.mgr.Config.MerchantID),
@@ -61,15 +49,20 @@ func (s *JsApiClient) JsApiPayRequest(openId string, amount int64, outTradeNo, d
 	}
 
 	reqData, _ := json.Marshal(prepayRequest)
+
 	vlog.Infof("jsapi prepay request: %s", reqData)
-	resp, _, err := s.JsApi.PrepayWithRequestPayment(ctx, prepayRequest)
+
+	resp, result, err := s.jsApi.PrepayWithRequestPayment(ctx, prepayRequest)
 	if err != nil {
 		vlog.Errorf("jsapi prepay failed: %v", err)
 		return nil, err
 	}
 
-	respData, _ := json.Marshal(resp)
-	vlog.Infof("jsapi prepay response: %s", respData)
+	vlog.Infof("jsapi prepay response: %s", vjson.EnsureMarshal(resp))
+
+	if result.Response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("jsapi prepay failed, status code: %d", result.Response.StatusCode)
+	}
 
 	return &JsApiPayParams{
 		AppID:     resp.Appid,
@@ -80,39 +73,4 @@ func (s *JsApiClient) JsApiPayRequest(openId string, amount int64, outTradeNo, d
 		PaySign:   resp.PaySign,
 		PayNo:     &outTradeNo,
 	}, nil
-}
-
-func (s *JsApiClient) JsApiNotifyParse(headerFetcher func(string) string, body []byte) (*notify.Request, map[string]interface{}, error) {
-	ctx := context.Background()
-
-	err := s.ValidateHTTPMessage(ctx, headerFetcher, body)
-	if err != nil {
-		vlog.Errorf("validate http message failed: %v", err)
-		return nil, nil, err
-	}
-
-	return s.JsApiNotifyParseBody(body)
-}
-
-func (s *JsApiClient) JsApiNotifyParseBody(body []byte) (*notify.Request, map[string]interface{}, error) {
-	ret := new(notify.Request)
-	if err := json.Unmarshal(body, ret); err != nil {
-		return nil, nil, fmt.Errorf("parse request body error: %v", err)
-	}
-
-	plaintext, err := utils.DecryptAES256GCM(
-		s.mgr.Config.MerchantAPIv3Key, ret.Resource.AssociatedData, ret.Resource.Nonce, ret.Resource.Ciphertext,
-	)
-	if err != nil {
-		return ret, nil, fmt.Errorf("decrypt request error: %v", err)
-	}
-
-	ret.Resource.Plaintext = plaintext
-
-	content := map[string]interface{}{}
-	if err = json.Unmarshal([]byte(plaintext), &content); err != nil {
-		return ret, nil, fmt.Errorf("unmarshal plaintext to content failed: %v", err)
-	}
-
-	return ret, content, nil
 }

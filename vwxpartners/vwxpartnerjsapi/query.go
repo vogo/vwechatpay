@@ -42,7 +42,7 @@ func (c *PartnerJsApiClient) QueryOrderById(ctx context.Context, subMchID, trans
 	vlog.Infof("partner jsapi query order, subMchID: %s, transactionId: %s", subMchID, transactionId)
 
 	// 发送请求
-	resp, result, err := c.jsapiApiService.QueryOrderById(ctx, req)
+	resp, result, err := c.jsapiApi.QueryOrderById(ctx, req)
 	if err != nil {
 		vlog.Errorf("query order by id error: %v", err)
 		return nil, err
@@ -71,7 +71,7 @@ func (c *PartnerJsApiClient) QueryOrderByOutTradeNo(ctx context.Context, subMchI
 	vlog.Infof("partner jsapi query request, subMchID: %s, outTradeNo: %s", subMchID, outTradeNo)
 
 	// 发送请求
-	resp, result, err := c.jsapiApiService.QueryOrderByOutTradeNo(ctx, req)
+	resp, result, err := c.jsapiApi.QueryOrderByOutTradeNo(ctx, req)
 	if err != nil {
 		vlog.Errorf("query order by out trade no error: %v", err)
 		return nil, err

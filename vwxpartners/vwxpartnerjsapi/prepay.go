@@ -92,7 +92,7 @@ func (c *PartnerJsApiClient) Prepay(ctx context.Context,
 	reqData, _ := json.Marshal(req)
 	vlog.Infof("partner jsapi prepay request: %s", reqData)
 
-	resp, result, err := c.jsapiApiService.Prepay(ctx, req)
+	resp, result, err := c.jsapiApi.Prepay(ctx, req)
 	if err != nil {
 		vlog.Errorf("partner jsapi prepay error: %v", err)
 		return nil, err
