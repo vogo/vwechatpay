@@ -21,9 +21,7 @@ import (
 	"errors"
 )
 
-var (
-	ErrOrderPaid = errors.New("订单已支付")
-)
+var ErrOrderPaid = errors.New("订单已支付")
 
 type JsApiPayParams struct {
 	AppID     *string `json:"appId"`
