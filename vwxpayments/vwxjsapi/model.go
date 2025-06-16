@@ -17,6 +17,14 @@
 
 package vwxjsapi
 
+import (
+	"errors"
+)
+
+var (
+	ErrOrderPaid = errors.New("订单已支付")
+)
+
 type JsApiPayParams struct {
 	AppID     *string `json:"appId"`
 	TimeStamp *string `json:"timeStamp"`
