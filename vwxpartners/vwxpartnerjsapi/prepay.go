@@ -45,6 +45,7 @@ func (c *PartnerJsApiClient) Prepay(ctx context.Context,
 	subMchID, userOpenID string,
 	amount int64,
 	outTradeNo, description, attach, callbackUrl string,
+	expireTime time.Time,
 	subAppID string,
 	profitSharing bool,
 ) (*PartnerJsApiPayParams, error) {
@@ -58,6 +59,7 @@ func (c *PartnerJsApiClient) Prepay(ctx context.Context,
 		Amount: &jsapi.Amount{
 			Total: core.Int64(amount),
 		},
+		TimeExpire: core.Time(expireTime),
 	}
 
 	// 设置子商户 appid（可选）

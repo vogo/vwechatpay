@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/vogo/vogo/vencoding/vjson"
 	"github.com/vogo/vogo/vlog"
@@ -33,6 +34,7 @@ import (
 func (s *JsApiClient) Prepay(ctx context.Context,
 	openId string, amount int64,
 	outTradeNo, description, attach, callbackUrl string,
+	expireTime time.Time,
 ) (*JsApiPayParams, error) {
 	prepayRequest := jsapi.PrepayRequest{
 		Appid:       core.String(s.mgr.Config.AppID),
@@ -47,6 +49,7 @@ func (s *JsApiClient) Prepay(ctx context.Context,
 		Payer: &jsapi.Payer{
 			Openid: core.String(openId),
 		},
+		TimeExpire: core.Time(expireTime),
 	}
 
 	reqData, _ := json.Marshal(prepayRequest)
