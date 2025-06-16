@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/vogo/vogo/vencoding/vjson"
@@ -94,7 +95,15 @@ func (c *PartnerJsApiClient) Prepay(ctx context.Context,
 
 	resp, result, err := c.jsapiApi.Prepay(ctx, req)
 	if err != nil {
-		vlog.Errorf("partner jsapi prepay error: %v", err)
+		errMsg := fmt.Sprintf("%v", err)
+
+		vlog.Errorf("partner jsapi prepay error: %v", errMsg)
+
+		if strings.Contains(errMsg, "ORDERPAID") &&
+			strings.Contains(errMsg, "订单已支付") {
+			return nil, ErrOrderPaid
+		}
+
 		return nil, err
 	}
 

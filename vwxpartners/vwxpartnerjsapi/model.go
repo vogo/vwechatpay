@@ -19,6 +19,7 @@ package vwxpartnerjsapi
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"math"
 	"strconv"
@@ -26,6 +27,10 @@ import (
 	"time"
 
 	"github.com/wechatpay-apiv3/wechatpay-go/core/consts"
+)
+
+var (
+	ErrOrderPaid = errors.New("订单已支付")
 )
 
 // PartnerJsApiPayParams 服务商模式 JSAPI 支付参数
