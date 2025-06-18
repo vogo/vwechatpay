@@ -118,9 +118,7 @@ func (c *CapitalClient) QueryBranchBanks(ctx context.Context, req *BranchBankReq
 }
 
 func (c *CapitalClient) UpdateBankCache(ctx context.Context) error {
-	if c.bankCache == nil {
-		c.bankCache = make(map[string]*BankInfo)
-	}
+	cache := make(map[string]*BankInfo)
 
 	offset := 0
 	limit := 100
@@ -134,7 +132,7 @@ func (c *CapitalClient) UpdateBankCache(ctx context.Context) error {
 			return fmt.Errorf("query personal banks error: %w", err)
 		}
 		for _, bank := range resp.Data {
-			c.bankCache[bank.BankAlias] = bank
+			cache[bank.BankAlias] = bank
 		}
 
 		if resp.Count < limit {
@@ -143,6 +141,8 @@ func (c *CapitalClient) UpdateBankCache(ctx context.Context) error {
 
 		offset = offset + limit
 	}
+
+	c.bankCache = cache
 
 	return nil
 }
