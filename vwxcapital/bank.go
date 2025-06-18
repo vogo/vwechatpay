@@ -53,7 +53,7 @@ func (c *CapitalClient) QueryPersonalBanks(ctx context.Context, req *PersonalBan
 		url = url + "?" + strings.Join(queryParams, "&")
 	}
 
-	vlog.Infof("query personal banks: %s", url)
+	vlog.Debugf("query personal banks: %s", url)
 
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
@@ -65,7 +65,7 @@ func (c *CapitalClient) QueryPersonalBanks(ctx context.Context, req *PersonalBan
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("query personal banks response: %s", respBody)
+	vlog.Debugf("query personal banks response: %s", respBody)
 
 	var resp PersonalBankResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {
@@ -120,6 +120,8 @@ func (c *CapitalClient) QueryBranchBanks(ctx context.Context, req *BranchBankReq
 func (c *CapitalClient) UpdateBankCache(ctx context.Context) error {
 	cache := make(map[string]*BankInfo)
 
+	vlog.Infof("update bank cache start")
+
 	offset := 0
 	limit := 100
 	for {
@@ -143,6 +145,8 @@ func (c *CapitalClient) UpdateBankCache(ctx context.Context) error {
 	}
 
 	c.bankCache = cache
+
+	vlog.Infof("update bank cache end, count: %d", len(cache))
 
 	return nil
 }
