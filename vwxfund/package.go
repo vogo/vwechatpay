@@ -15,32 +15,4 @@
  * limitations under the License.
  */
 
-package vwxpartnerjsapi
-
-import (
-	"context"
-	"fmt"
-)
-
-// ValidateHTTPMessage 验证 HTTP 消息
-func (c *PartnerJsApiClient) ValidateHTTPMessage(ctx context.Context, headerFetcher func(string) string, body []byte) error {
-	headerArgs, err := getWechatPayHeader(headerFetcher)
-	if err != nil {
-		return err
-	}
-
-	if err = checkWechatPayHeader(ctx, headerArgs); err != nil {
-		return err
-	}
-
-	message := buildMessage(ctx, headerArgs, body)
-
-	if err = c.mgr.PlatManager.LoadVerifier().Verify(ctx, headerArgs.Serial, message, headerArgs.Signature); err != nil {
-		return fmt.Errorf(
-			"validate verify fail serial=[%s] request-id=[%s] err=%w",
-			headerArgs.Serial, headerArgs.RequestID, err,
-		)
-	}
-
-	return nil
-}
+package vwxfund

@@ -15,34 +15,20 @@
  * limitations under the License.
  */
 
-package vwxpartnerjsapi
+package vwxmchtransfer
 
 import (
-	"errors"
+	"github.com/vogo/vwechatpay"
 )
 
-var ErrOrderPaid = errors.New("订单已支付")
+// MchTransferClient 商家转账客户端
+type MchTransferClient struct {
+	mgr *vwechatpay.Manager
+}
 
-// PartnerJsApiPayParams 服务商模式 JSAPI 支付参数
-type PartnerJsApiPayParams struct {
-	// AppID 服务商应用ID
-	AppID *string `json:"appId"`
-
-	// TimeStamp 时间戳
-	TimeStamp *string `json:"timeStamp"`
-
-	// NonceStr 随机字符串
-	NonceStr *string `json:"nonceStr"`
-
-	// Package 订单详情扩展字符串
-	Package *string `json:"package"`
-
-	// SignType 签名方式
-	SignType *string `json:"signType"`
-
-	// PaySign 签名
-	PaySign *string `json:"paySign"`
-
-	// PayNo 商户订单号
-	PayNo *string `json:"payNo"`
+// NewMchTransferClient 创建商家转账客户端
+func NewMchTransferClient(mgr *vwechatpay.Manager) *MchTransferClient {
+	return &MchTransferClient{
+		mgr: mgr,
+	}
 }

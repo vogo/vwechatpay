@@ -30,23 +30,8 @@ import (
 func (c *PartnerJsApiClient) PartnerJsApiNotifyParse(headerFetcher func(string) string, body []byte) (*notify.Request, map[string]interface{}, error) {
 	ctx := context.Background()
 
-	// 验证回调通知签名
-	headerArgs, err := getWechatPayHeader(headerFetcher)
-	if err != nil {
+	if err := c.mgr.PlatManager.VerifyRequestMessage(ctx, headerFetcher, body); err != nil {
 		return nil, nil, err
-	}
-
-	if err = checkWechatPayHeader(ctx, headerArgs); err != nil {
-		return nil, nil, err
-	}
-
-	message := buildMessage(ctx, headerArgs, body)
-
-	if err = c.mgr.PlatManager.LoadVerifier().Verify(ctx, headerArgs.Serial, message, headerArgs.Signature); err != nil {
-		return nil, nil, fmt.Errorf(
-			"validate verify fail serial=[%s] request-id=[%s] err=%w",
-			headerArgs.Serial, headerArgs.RequestID, err,
-		)
 	}
 
 	return c.PartnerJsApiNotifyParseBody(body)
