@@ -27,23 +27,23 @@ import (
 	"github.com/vogo/vogo/vlog"
 )
 
-// TransferSceneReportInfo 转账场景报备信息
+// TransferSceneReportInfo 转账场景报备信息, 参考 https://pay.weixin.qq.com/doc/v3/merchant/4013774588
 type TransferSceneReportInfo struct {
-	SceneType string `json:"scene_type,omitempty"`
-	SceneDesc string `json:"scene_desc,omitempty"`
+	InfoType string `json:"info_type,omitempty"` // 【信息类型】 不能超过15个字符，商户所属转账场景下的信息类型，此字段内容为固定值, 信息类型，两条明细中必须分别填写以下两个取值：活动名称,奖励说明
+	InfoDesc string `json:"info_desc,omitempty"` // 【信息内容】 不能超过32个字符，商户所属转账场景下的信息内容，商户可按实际业务场景自定义传参
 }
 
 // TransferRequest 发起转账请求
 type TransferRequest struct {
 	Appid                    string                     `json:"appid"`                          // 商户AppID
 	OutBillNo                string                     `json:"out_bill_no"`                    // 商户单号
-	TransferSceneId          string                     `json:"transfer_scene_id"`              // 转账场景ID
+	TransferSceneId          string                     `json:"transfer_scene_id"`              // 转账场景ID, 可前往“商户平台-产品中心-商家转账”中申请。如：1000（现金营销），1006（企业报销）等
 	Openid                   string                     `json:"openid"`                         // 收款用户OpenID
 	UserName                 string                     `json:"user_name,omitempty"`            // 收款用户姓名
 	TransferAmount           int64                      `json:"transfer_amount"`                // 转账金额
 	TransferRemark           string                     `json:"transfer_remark"`                // 转账备注
 	NotifyUrl                string                     `json:"notify_url,omitempty"`           // 通知地址
-	UserRecvPerception       string                     `json:"user_recv_perception,omitempty"` // 用户收款感知
+	UserRecvPerception       string                     `json:"user_recv_perception,omitempty"` // 用户收款感知, 参考 https://pay.weixin.qq.com/doc/v3/merchant/4012711988#2.3-%E5%8F%91%E8%B5%B7%E8%BD%AC%E8%B4%A6
 	TransferSceneReportInfos []*TransferSceneReportInfo `json:"transfer_scene_report_infos"`    // 转账场景报备信息
 }
 
