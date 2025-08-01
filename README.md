@@ -10,6 +10,7 @@
 - 提供退款、订单查询、关闭订单等完整功能
 - 支持支付回调通知的处理和验证
 - 提供商户进件、资金账户等扩展功能
+- 支持商家转账功能，包括发起转账、撤销转账、查询转账单等
 
 ## 项目结构
 
@@ -21,6 +22,8 @@
 │   ├── vwxpartnerjsapi  # 服务商JSAPI支付
 │   └── vwxpartnerapp    # 服务商APP支付
 ├── vwxrefund       # 退款相关功能
+├── vwxfund         # 资金相关功能
+│   └── vwxmchtransfer   # 商家转账功能
 ├── vwxapply4sub    # 商户进件相关功能
 ├── vwxcapital      # 资金账户相关功能
 ├── vwxmerchant     # 商户相关功能
@@ -131,6 +134,45 @@ refund, err := refundClient.CreateRefundWithAmount(
     100,  // 退款金额，单位：分
     100,  // 订单总金额，单位：分
     "",   // 子商户号，服务商模式下使用
+)
+```
+
+### 商家转账
+
+```go
+// 创建商家转账客户端
+transferClient := vwxmchtransfer.NewMchTransferClient(mgr)
+
+// 发起转账
+transferResp, err := transferClient.Transfer(
+    ctx,
+    "商户转账单号",
+    "转账场景ID",
+    "收款用户OpenID",
+    100,  // 转账金额，单位：分
+    "转账备注",
+    "",   // 收款用户姓名（转账金额>=2000元时必填）
+    "",   // 通知地址（可选）
+    "",   // 用户收款感知（可选）
+    nil,  // 转账场景报备信息
+)
+
+// 查询转账单（通过商户单号）
+queryResp, err := transferClient.QueryTransferByOutBillNo(ctx, "商户转账单号")
+
+// 查询转账单（通过微信转账单号）
+queryResp, err := transferClient.QueryTransferByTransferBillNo(ctx, "微信转账单号")
+
+// 撤销转账（仅能撤销处于"WAIT_PAY"状态的转账单）
+cancelResp, err := transferClient.CancelTransfer(ctx, "商户转账单号")
+
+// 处理转账回调通知
+notifyContent, err := transferClient.ParseTransferNotify(
+    func(key string) string {
+        // 从HTTP请求头中获取对应的值
+        return r.Header.Get(key)
+    },
+    requestBody,  // HTTP请求体
 )
 ```
 
