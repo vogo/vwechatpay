@@ -72,13 +72,13 @@ func (c *MchTransferClient) ParseTransferNotifyBody(body []byte) (*notify.Reques
 
 // TransferNotify 转账回调通知数据结构
 type TransferNotify struct {
-	Mchid          string `json:"mchid"`            // 商户号
+	MchId          string `json:"mch_id"`           // 商户号
 	OutBillNo      string `json:"out_bill_no"`      // 商户单号
-	TransferBillNo string `json:"transfer_bill_no"` // 微信转账单号
-	TransferState  string `json:"transfer_state"`   // 转账状态
+	State          string `json:"state"`            // 转账状态
 	FailReason     string `json:"fail_reason"`      // 失败原因
 	Openid         string `json:"openid"`           // 用户openid
 	UserName       string `json:"user_name"`        // 收款用户姓名
+	TransferBillNo string `json:"transfer_bill_no"` // 微信转账单号
 	TransferAmount int64  `json:"transfer_amount"`  // 转账金额
 	TransferRemark string `json:"transfer_remark"`  // 转账备注
 	TransferTime   string `json:"transfer_time"`    // 转账时间
