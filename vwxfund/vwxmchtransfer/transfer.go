@@ -96,6 +96,10 @@ func (c *MchTransferClient) Transfer(ctx context.Context,
 		req.UserRecvPerception = userRecvPerception
 	}
 
+	return c.DoTransfer(ctx, &req)
+}
+
+func (c *MchTransferClient) DoTransfer(ctx context.Context, req *TransferRequest) (*TransferBillsResponse, error) {
 	// 序列化请求数据
 	reqBody, err := json.Marshal(req)
 	if err != nil {
