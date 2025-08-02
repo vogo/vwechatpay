@@ -29,8 +29,8 @@ import (
 
 // TransferSceneReportInfo 转账场景报备信息, 参考 https://pay.weixin.qq.com/doc/v3/merchant/4013774588
 type TransferSceneReportInfo struct {
-	InfoType string `json:"info_type,omitempty"` // 【信息类型】 不能超过15个字符，商户所属转账场景下的信息类型，此字段内容为固定值, 信息类型，两条明细中必须分别填写以下两个取值：活动名称,奖励说明
-	InfoDesc string `json:"info_desc,omitempty"` // 【信息内容】 不能超过32个字符，商户所属转账场景下的信息内容，商户可按实际业务场景自定义传参
+	InfoType    string `json:"info_type,omitempty"`    // 【信息类型】 不能超过15个字符，商户所属转账场景下的信息类型，此字段内容为固定值, 信息类型，两条明细中必须分别填写以下两个取值：活动名称,奖励说明
+	InfoContent string `json:"info_content,omitempty"` // 【信息内容】 不能超过32个字符，商户所属转账场景下的信息内容，商户可按实际业务场景自定义传参
 }
 
 // TransferRequest 发起转账请求
