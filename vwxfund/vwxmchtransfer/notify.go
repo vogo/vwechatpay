@@ -59,13 +59,13 @@ func (c *MchTransferClient) ParseTransferNotifyBody(body []byte) (*notify.Reques
 
 	ret.Resource.Plaintext = plaintext
 
+	vlog.Infof("received transfer notify: %s", plaintext)
+
 	// 解析转账通知内容
 	var transferNotify TransferNotify
 	if err := json.Unmarshal([]byte(plaintext), &transferNotify); err != nil {
 		return ret, nil, fmt.Errorf("unmarshal transfer notify error: %v", err)
 	}
-
-	vlog.Infof("received transfer notify: %+v", transferNotify)
 
 	return ret, &transferNotify, nil
 }
