@@ -44,16 +44,17 @@ type QueryTransferResponse struct {
 
 // QueryTransferByOutBillNo 商户单号查询转账单
 // 商户可以通过该接口查询转账单据的详细信息
+// 参考: https://pay.weixin.qq.com/doc/v3/merchant/4012716437
 func (c *MchTransferClient) QueryTransferByOutBillNo(ctx context.Context, outBillNo string) (*QueryTransferResponse, error) {
-	vlog.Infof("query transfer by out bill no, outBillNo: %s", outBillNo)
+	vlog.Infof("query transfer by outBillNo: %s", outBillNo)
 
 	// 构建请求URL
-	url := fmt.Sprintf("https://api.mch.weixin.qq.com/v3/transfer/bills/out-bill-no/%s", outBillNo)
+	url := fmt.Sprintf("https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/transfer-bills/out-bill-no/%s", outBillNo)
 
 	// 发送HTTP请求
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
-		return nil, fmt.Errorf("query transfer by out bill no error: %w", err)
+		return nil, fmt.Errorf("query transfer by outBillNo error: %w", err)
 	}
 
 	respBody, err := io.ReadAll(result.Response.Body)
@@ -73,15 +74,15 @@ func (c *MchTransferClient) QueryTransferByOutBillNo(ctx context.Context, outBil
 // QueryTransferByTransferBillNo 微信单号查询转账单
 // 商户可以通过该接口查询转账单据的详细信息
 func (c *MchTransferClient) QueryTransferByTransferBillNo(ctx context.Context, transferBillNo string) (*QueryTransferResponse, error) {
-	vlog.Infof("query transfer by transfer bill no, transferBillNo: %s", transferBillNo)
+	vlog.Infof("query transfer by transferBillNo: %s", transferBillNo)
 
 	// 构建请求URL
-	url := fmt.Sprintf("https://api.mch.weixin.qq.com/v3/transfer/bills/transfer-bill-no/%s", transferBillNo)
+	url := fmt.Sprintf("https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/transfer-bills/transfer-bill-no/%s", transferBillNo)
 
 	// 发送HTTP请求
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
-		return nil, fmt.Errorf("query transfer by transfer bill no error: %w", err)
+		return nil, fmt.Errorf("query transfer by transferBillNo error: %w", err)
 	}
 
 	respBody, err := io.ReadAll(result.Response.Body)

@@ -42,6 +42,7 @@ type CancelTransferResponse struct {
 
 // CancelTransfer 撤销转账
 // 商户可以通过该接口撤销转账，仅能撤销处于"WAIT_PAY"状态的转账单
+// 参考: https://pay.weixin.qq.com/doc/v3/merchant/4012716458
 func (c *MchTransferClient) CancelTransfer(ctx context.Context, outBillNo string) (*CancelTransferResponse, error) {
 	// 构建请求参数
 	req := CancelTransferRequest{
@@ -59,7 +60,7 @@ func (c *MchTransferClient) CancelTransfer(ctx context.Context, outBillNo string
 	vlog.Infof("cancel transfer request: %s", reqBody)
 
 	// 构建请求URL
-	url := fmt.Sprintf("https://api.mch.weixin.qq.com/v3/transfer/bills/%s/cancel", outBillNo)
+	url := fmt.Sprintf("https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/transfer-bills/out-bill-no/%s/cancel", outBillNo)
 
 	// 发送HTTP请求
 	result, err := c.mgr.Client.Post(ctx, url, bytes.NewBuffer(reqBody))
