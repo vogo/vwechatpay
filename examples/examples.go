@@ -18,7 +18,12 @@
 package main
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/vogo/vwechatpay"
+	"github.com/vogo/vwechatpay/vwxfund/vwxmchbalance"
+	"github.com/wechatpay-apiv3/wechatpay-go/core"
 )
 
 func main() {
@@ -27,5 +32,20 @@ func main() {
 		panic(err)
 	}
 	cert := mgr.PlatManager.LoadCert()
-	println(cert)
+	fmt.Printf("cert serial number: %s\n", cert.SerialNumber)
+
+	balanceClient := vwxmchbalance.NewMchBalanceClient(mgr)
+	resp, err := balanceClient.QueryBalance(context.Background(), vwxmchbalance.AccountTypeOperation)
+	if err != nil {
+		if wxerr, ok := err.(*core.APIError); ok {
+			fmt.Printf("query balance error, code: %s, message: %s\n", wxerr.Code, wxerr.Message)
+		} else {
+			fmt.Printf("query balance error: %v\n", err)
+		}
+	} else {
+		fmt.Printf("available amount: %d\n", resp.AvailableAmount)
+		if resp.PendingAmount != nil {
+			fmt.Printf("pending amount: %d\n", *resp.PendingAmount)
+		}
+	}
 }

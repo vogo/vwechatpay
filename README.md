@@ -23,7 +23,8 @@
 │   └── vwxpartnerapp    # 服务商APP支付
 ├── vwxrefund       # 退款相关功能
 ├── vwxfund         # 资金相关功能
-│   └── vwxmchtransfer   # 商家转账功能
+│   ├── vwxmchtransfer   # 商家转账功能
+│   └── vwxmchbalance    # 商户账户余额查询功能
 ├── vwxapply4sub    # 商户进件相关功能
 ├── vwxcapital      # 资金账户相关功能
 ├── vwxmerchant     # 商户相关功能
@@ -197,6 +198,27 @@ if err != nil {
 // 根据业务需求处理支付结果
 ```
 
+### 查询账户余额
+
+```go
+// 创建账户余额查询客户端
+balanceClient := vwxmchbalance.NewMchBalanceClient(mgr)
+
+// 查询基本账户余额
+balance, err := balanceClient.QueryBalance(ctx, vwxmchbalance.AccountTypeBasic)
+if err != nil {
+    // 处理错误
+}
+
+// 可用余额(单位:分)
+fmt.Printf("可用余额: %d 分\n", balance.AvailableAmount)
+
+// 冻结余额(单位:分)
+if balance.PendingAmount != nil {
+    fmt.Printf("冻结余额: %d 分\n", *balance.PendingAmount)
+}
+```
+
 ## 服务商模式
 
 ### 服务商JSAPI支付
@@ -278,4 +300,4 @@ resp, err := apply4subClient.Submit(ctx, applyRequest)
 
 ## 许可证
 
-本项目采用 MIT 许可证，详情请参阅 LICENSE 文件。
+本项目采用 Apache License Version 2.0 许可证，详情请参阅 LICENSE 文件。
