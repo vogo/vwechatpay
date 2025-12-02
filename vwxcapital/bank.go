@@ -99,7 +99,7 @@ func (c *CapitalClient) QueryBranchBanks(ctx context.Context, req *BranchBankReq
 
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
-		return nil, fmt.Errorf("query branch banks error: %w", err)
+		return nil, err
 	}
 
 	respBody, err := io.ReadAll(result.Response.Body)

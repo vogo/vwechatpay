@@ -93,7 +93,7 @@ func (c *Apply4SubClient) ModifySettlement(ctx context.Context, subMchID string,
 
 	result, err := c.mgr.Client.Post(ctx, url, bytes.NewBuffer(reqBody))
 	if err != nil {
-		return nil, fmt.Errorf("modify settlement error: %w", err)
+		return nil, err
 	}
 
 	respBody, err := io.ReadAll(result.Response.Body)

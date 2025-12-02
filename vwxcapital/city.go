@@ -50,7 +50,7 @@ func (c *CapitalClient) QueryCities(ctx context.Context, provinceCode int) (*Cit
 
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
-		return nil, fmt.Errorf("query cities error: %w", err)
+		return nil, err
 	}
 
 	respBody, err := io.ReadAll(result.Response.Body)

@@ -54,7 +54,7 @@ func (c *MchTransferClient) QueryTransferByOutBillNo(ctx context.Context, outBil
 	// 发送HTTP请求
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
-		return nil, fmt.Errorf("query transfer by outBillNo error: %w", err)
+		return nil, err
 	}
 
 	respBody, err := io.ReadAll(result.Response.Body)

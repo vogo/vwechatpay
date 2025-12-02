@@ -44,7 +44,7 @@ func (c *Apply4SubClient) SubmitApplyment(ctx context.Context, req *ApplymentReq
 
 	result, err := c.mgr.Client.Post(ctx, ApplymentURL, bytes.NewBuffer(reqBody))
 	if err != nil {
-		return nil, fmt.Errorf("submit applyment error: %w", err)
+		return nil, err
 	}
 
 	respBody, err := io.ReadAll(result.Response.Body)

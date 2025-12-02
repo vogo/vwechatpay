@@ -113,7 +113,7 @@ func (c *MchTransferClient) DoTransfer(ctx context.Context, req *TransferRequest
 	url := "https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/transfer-bills"
 	result, err := c.mgr.Client.Post(ctx, url, bytes.NewBuffer(reqBody))
 	if err != nil {
-		return nil, fmt.Errorf("transfer error: %w", err)
+		return nil, err
 	}
 
 	respBody, err := io.ReadAll(result.Response.Body)

@@ -23,6 +23,7 @@ import (
 	"log"
 	"testing"
 
+	"github.com/vogo/vogo/vencoding/vjson"
 	"github.com/vogo/vwechatpay"
 )
 
@@ -75,7 +76,7 @@ func TestMicroMerchantApplyment(t *testing.T) {
 		},
 	}
 
-	t.Log(microApplymentRequestDemo)
+	t.Logf("microApplymentRequestDemo: %s", vjson.EnsureMarshal(microApplymentRequestDemo))
 }
 
 // TestSubmitApplyment 提交申请单示例
