@@ -32,6 +32,7 @@ import (
 )
 
 // Prepay 服务商模式 JSAPI 支付下单请求
+// appID: 商户 appid
 // subMchID: 子商户号
 // userOpenID: 用户唯一标识
 // amount: 金额，单位为分
@@ -42,15 +43,19 @@ import (
 // subAppID: 子商户 appid，可选
 // profitSharing: 是否分账，可选
 func (c *PartnerJsApiClient) Prepay(ctx context.Context,
-	subMchID, userOpenID string,
+	appID, subMchID, userOpenID string,
 	amount int64,
 	outTradeNo, description, attach, callbackUrl string,
 	expireTime time.Time,
 	subAppID string,
 	profitSharing bool,
 ) (*PartnerJsApiPayParams, error) {
+	if appID == "" {
+		appID = c.mgr.Config.AppID
+	}
+
 	req := jsapi.PrepayRequest{
-		SpAppid:     core.String(c.mgr.Config.AppID),
+		SpAppid:     core.String(appID),
 		SpMchid:     core.String(c.mgr.Config.MerchantID),
 		SubMchid:    core.String(subMchID),
 		Description: core.String(description),
@@ -133,7 +138,7 @@ func (c *PartnerJsApiClient) Prepay(ctx context.Context,
 
 	// 构建签名参数
 	message := fmt.Sprintf("%s\n%s\n%s\n%s\n",
-		c.mgr.Config.AppID, timeStamp, nonceStr, packageStr)
+		appID, timeStamp, nonceStr, packageStr)
 
 	// 计算签名
 	signature, err := c.mgr.Sign(message)
@@ -144,7 +149,7 @@ func (c *PartnerJsApiClient) Prepay(ctx context.Context,
 
 	// 返回调起支付参数
 	return &PartnerJsApiPayParams{
-		AppID:     core.String(c.mgr.Config.AppID),
+		AppID:     core.String(appID),
 		TimeStamp: core.String(timeStamp),
 		NonceStr:  core.String(nonceStr),
 		Package:   core.String(packageStr),

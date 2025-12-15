@@ -58,6 +58,7 @@ type TransferBillsResponse struct {
 }
 
 // Transfer 发起转账
+// appID: 商户AppID
 // outBillNo: 商户单号
 // transferSceneId: 转账场景ID
 // openid: 收款用户OpenID
@@ -68,15 +69,20 @@ type TransferBillsResponse struct {
 // userRecvPerception: 用户收款感知（可选）
 // transferSceneReportInfos: 转账场景报备信息
 func (c *MchTransferClient) Transfer(ctx context.Context,
+	appID string,
 	outBillNo, transferSceneId, openid string,
 	transferAmount int64,
 	transferRemark string,
 	userName, notifyUrl, userRecvPerception string,
 	transferSceneReportInfos []*TransferSceneReportInfo,
 ) (*TransferBillsResponse, error) {
+	if appID == "" {
+		appID = c.mgr.Config.AppID
+	}
+
 	// 构建请求参数
 	req := TransferRequest{
-		Appid:                    c.mgr.Config.AppID,
+		Appid:                    appID,
 		OutBillNo:                outBillNo,
 		TransferSceneId:          transferSceneId,
 		Openid:                   openid,

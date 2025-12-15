@@ -36,7 +36,7 @@ type Config struct {
 	PrivateKeyContent    string `json:"private_key_content"`     // 私钥内容
 	CertPath             string `json:"cert_path"`               // 证书文件路径
 	CertContent          string `json:"cert_content"`            // 证书内容
-	AppID                string `json:"app_id"`                  // 应用ID
+	AppID                string `json:"app_id"`                  // 应用ID(默认AppID)
 }
 
 func LoadConfigFromEnv() (*Config, error) {

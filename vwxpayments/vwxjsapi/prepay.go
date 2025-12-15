@@ -32,12 +32,16 @@ import (
 )
 
 func (s *JsApiClient) Prepay(ctx context.Context,
-	openId string, amount int64,
+	appID, openId string, amount int64,
 	outTradeNo, description, attach, callbackUrl string,
 	expireTime time.Time,
 ) (*JsApiPayParams, error) {
+	if appID == "" {
+		appID = s.mgr.Config.AppID
+	}
+
 	prepayRequest := jsapi.PrepayRequest{
-		Appid:       core.String(s.mgr.Config.AppID),
+		Appid:       core.String(appID),
 		Mchid:       core.String(s.mgr.Config.MerchantID),
 		Description: core.String(description),
 		OutTradeNo:  core.String(outTradeNo),
