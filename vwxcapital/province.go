@@ -42,7 +42,7 @@ func (c *CapitalClient) QueryProvinces(ctx context.Context) (*ProvinceResponse, 
 	// 构建URL
 	url := ProvincesURL
 
-	vlog.Infof("query provinces: %s", url)
+	vlog.Infof("query provinces | url: %s", url)
 
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
@@ -54,7 +54,7 @@ func (c *CapitalClient) QueryProvinces(ctx context.Context) (*ProvinceResponse, 
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("query provinces response: %s", respBody)
+	vlog.Infof("query provinces response | body: %s", respBody)
 
 	var resp ProvinceResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {

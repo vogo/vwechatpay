@@ -39,16 +39,16 @@ func (c *PartnerJsApiClient) QueryOrderById(ctx context.Context, subMchID, trans
 		SubMchid:      core.String(subMchID),
 	}
 
-	vlog.Infof("partner jsapi query order, subMchID: %s, transactionId: %s", subMchID, transactionId)
+	vlog.Infof("partner jsapi query order | sub_mch_id: %s | transaction_id: %s", subMchID, transactionId)
 
 	// 发送请求
 	resp, result, err := c.jsapiApi.QueryOrderById(ctx, req)
 	if err != nil {
-		vlog.Errorf("query order by id error: %v", err)
+		vlog.Errorf("query order by id error | err: %v", err)
 		return nil, err
 	}
 
-	vlog.Infof("partner jsapi query order response: %s", vjson.EnsureMarshal(resp))
+	vlog.Infof("partner jsapi query order response | body: %s", vjson.EnsureMarshal(resp))
 
 	if result.Response.StatusCode != 200 {
 		return nil, fmt.Errorf("query order by id failed with status code: %d", result.Response.StatusCode)
@@ -68,16 +68,16 @@ func (c *PartnerJsApiClient) QueryOrderByOutTradeNo(ctx context.Context, subMchI
 		SubMchid:   core.String(subMchID),
 	}
 
-	vlog.Infof("partner jsapi query request, subMchID: %s, outTradeNo: %s", subMchID, outTradeNo)
+	vlog.Infof("partner jsapi query request | sub_mch_id: %s | out_trade_no: %s", subMchID, outTradeNo)
 
 	// 发送请求
 	resp, result, err := c.jsapiApi.QueryOrderByOutTradeNo(ctx, req)
 	if err != nil {
-		vlog.Errorf("query order by out trade no error: %v", err)
+		vlog.Errorf("query order by out trade no error | err: %v", err)
 		return nil, err
 	}
 
-	vlog.Infof("partner jsapi query order response: %s", vjson.EnsureMarshal(resp))
+	vlog.Infof("partner jsapi query order response | body: %s", vjson.EnsureMarshal(resp))
 
 	if result.Response.StatusCode != 200 {
 		return nil, fmt.Errorf("query order by out trade no failed with status code: %d", result.Response.StatusCode)

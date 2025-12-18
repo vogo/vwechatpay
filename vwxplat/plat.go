@@ -81,25 +81,25 @@ func (c *PlatManager) reloadCert() {
 	// https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay5_1.shtml
 	resp, result, err := c.certificateApi.DownloadCertificates(ctx)
 	if err != nil {
-		vlog.Fatalf("load wechat platform merchantCert failed: %v", err)
+		vlog.Fatalf("failed to load wechat platform merchantCert | err: %v", err)
 		return
 	}
 
-	vlog.Infof("status=%d resp=%s", result.Response.StatusCode, resp)
+	vlog.Infof("download certificates response | status: %d | resp: %s", result.Response.StatusCode, resp)
 
 	// 解析返回数据获得公钥证书
 	encryptCert := resp.Data[0].EncryptCertificate
 	keyText, err := utils.DecryptAES256GCM(c.apiV3Key, *encryptCert.AssociatedData,
 		*encryptCert.Nonce, *encryptCert.Ciphertext)
 	if err != nil {
-		vlog.Fatalf("decrypt wechat platform merchantCert failed: %v", err)
+		vlog.Fatalf("failed to decrypt wechat platform merchantCert | err: %v", err)
 		return
 	}
 
 	// 解码证书
 	platCert, err := utils.LoadCertificate(keyText)
 	if err != nil {
-		vlog.Fatalf("load wechat platform merchantCert failed: %v", err)
+		vlog.Fatalf("failed to load wechat platform merchantCert | err: %v", err)
 		return
 	}
 

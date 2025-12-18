@@ -49,7 +49,7 @@ func (c *MchTransferClient) CancelTransfer(ctx context.Context, outBillNo string
 		OutBillNo: outBillNo,
 	}
 
-	vlog.Infof("cancel transfer, outBillNo: %s", outBillNo)
+	vlog.Infof("cancel transfer | out_bill_no: %s", outBillNo)
 
 	// 序列化请求体
 	reqBody, err := json.Marshal(req)
@@ -57,7 +57,7 @@ func (c *MchTransferClient) CancelTransfer(ctx context.Context, outBillNo string
 		return nil, fmt.Errorf("marshal request error: %v", err)
 	}
 
-	vlog.Infof("cancel transfer request: %s", reqBody)
+	vlog.Infof("cancel transfer request | body: %s", reqBody)
 
 	// 构建请求URL
 	url := fmt.Sprintf("https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/transfer-bills/out-bill-no/%s/cancel", outBillNo)
@@ -73,7 +73,7 @@ func (c *MchTransferClient) CancelTransfer(ctx context.Context, outBillNo string
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("cancel transfer response: %s", respBody)
+	vlog.Infof("cancel transfer response | body: %s", respBody)
 
 	var resp CancelTransferResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {

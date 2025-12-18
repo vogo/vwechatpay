@@ -32,7 +32,7 @@ func (s *JsApiClient) JsApiNotifyParse(headerFetcher func(string) string, body [
 
 	err := s.ValidateHTTPMessage(ctx, headerFetcher, body)
 	if err != nil {
-		vlog.Errorf("validate http message failed: %v", err)
+		vlog.Errorf("validate http message failed | err: %v", err)
 		return nil, nil, err
 	}
 

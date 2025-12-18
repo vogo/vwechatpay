@@ -109,11 +109,11 @@ func (c *MchTransferClient) DoTransfer(ctx context.Context, req *TransferRequest
 	// 序列化请求数据
 	reqBody, err := json.Marshal(req)
 	if err != nil {
-		vlog.Errorf("marshal transfer request error: %v", err)
+		vlog.Errorf("marshal transfer request error | err: %v", err)
 		return nil, err
 	}
 
-	vlog.Infof("mch transfer request: %s", reqBody)
+	vlog.Infof("mch transfer request | body: %s", reqBody)
 
 	// 发送HTTP请求
 	url := "https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/transfer-bills"
@@ -127,7 +127,7 @@ func (c *MchTransferClient) DoTransfer(ctx context.Context, req *TransferRequest
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("transfer response: %s", respBody)
+	vlog.Infof("transfer response | body: %s", respBody)
 
 	var resp TransferBillsResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {

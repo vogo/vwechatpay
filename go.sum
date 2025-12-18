@@ -13,8 +13,8 @@ github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 github.com/stretchr/testify v1.10.0 h1:Xv5erBjTwe/5IxqUQTdXv5kgmIvbHo3QQyRwhJsOfJA=
 github.com/stretchr/testify v1.10.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
-github.com/vogo/vogo v0.0.0-20251024105221-c403f88eeabb h1:SuZG2g0HOcK96VmafOU5J8U2cV71BpDsZjOZnV0nmIQ=
-github.com/vogo/vogo v0.0.0-20251024105221-c403f88eeabb/go.mod h1:VRv2Yyfl28FU6qRzzDvPP+eqqLhcqNrxQ5YGhknSvvk=
+github.com/vogo/vogo v0.0.0-20251218094335-59c7237680bc h1:OgZPPy7nVHJ6Tl7AZ8j/hLjLyub01TekgienN3rc0Pc=
+github.com/vogo/vogo v0.0.0-20251218094335-59c7237680bc/go.mod h1:VRv2Yyfl28FU6qRzzDvPP+eqqLhcqNrxQ5YGhknSvvk=
 github.com/wechatpay-apiv3/wechatpay-go v0.2.21 h1:uIyMpzvcaHA33W/QPtHstccw+X52HO1gFdvVL9O6Lfs=
 github.com/wechatpay-apiv3/wechatpay-go v0.2.21/go.mod h1:A254AUBVB6R+EqQFo3yTgeh7HtyqRRtN2w9hQSOrd4Q=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=

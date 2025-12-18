@@ -53,7 +53,7 @@ func (c *CapitalClient) QueryPersonalBanks(ctx context.Context, req *PersonalBan
 		url = url + "?" + strings.Join(queryParams, "&")
 	}
 
-	vlog.Debugf("query personal banks: %s", url)
+	vlog.Debugf("query personal banks | url: %s", url)
 
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
@@ -65,7 +65,7 @@ func (c *CapitalClient) QueryPersonalBanks(ctx context.Context, req *PersonalBan
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Debugf("query personal banks response: %s", respBody)
+	vlog.Debugf("query personal banks response | body: %s", respBody)
 
 	var resp PersonalBankResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {
@@ -95,7 +95,7 @@ func (c *CapitalClient) QueryBranchBanks(ctx context.Context, req *BranchBankReq
 		url = url + "?" + strings.Join(queryParams, "&")
 	}
 
-	vlog.Infof("query branch banks: %s", url)
+	vlog.Infof("query branch banks | url: %s", url)
 
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
@@ -107,7 +107,7 @@ func (c *CapitalClient) QueryBranchBanks(ctx context.Context, req *BranchBankReq
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("query branch banks response: %s", respBody)
+	vlog.Infof("query branch banks response | body: %s", respBody)
 
 	var resp BranchBankResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {
@@ -146,7 +146,7 @@ func (c *CapitalClient) UpdateBankCache(ctx context.Context) error {
 
 	c.bankCache = cache
 
-	vlog.Infof("update bank cache end, count: %d", len(cache))
+	vlog.Infof("update bank cache end | count: %d", len(cache))
 
 	return nil
 }
@@ -154,7 +154,7 @@ func (c *CapitalClient) UpdateBankCache(ctx context.Context) error {
 func (c *CapitalClient) GetBankInfo(bankAlias string) []*BankInfo {
 	if c.bankCache == nil {
 		if err := c.UpdateBankCache(context.Background()); err != nil {
-			vlog.Errorf("update bank cache error: %v", err)
+			vlog.Errorf("update bank cache error | err: %v", err)
 			return nil
 		}
 	}

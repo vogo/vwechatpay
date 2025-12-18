@@ -35,7 +35,7 @@ func (c *MchTransferClient) ParseTransferNotify(headerFetcher func(string) strin
 	// 验证回调通知签名
 	err := c.mgr.PlatManager.VerifyRequestMessage(ctx, headerFetcher, body)
 	if err != nil {
-		vlog.Errorf("validate http message failed: %v", err)
+		vlog.Errorf("validate http message failed | err: %v", err)
 		return nil, nil, err
 	}
 
@@ -59,7 +59,7 @@ func (c *MchTransferClient) ParseTransferNotifyBody(body []byte) (*notify.Reques
 
 	ret.Resource.Plaintext = plaintext
 
-	vlog.Infof("received transfer notify: %s", plaintext)
+	vlog.Infof("received transfer notify | plaintext: %s", plaintext)
 
 	// 解析转账通知内容
 	var transferNotify TransferNotify

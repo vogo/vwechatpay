@@ -41,7 +41,7 @@ func (c *Apply4SubClient) QueryApplymentByBusinessCode(ctx context.Context, busi
 	// 构建URL
 	url := fmt.Sprintf(ApplymentQueryByBusinessCodeURL, businessCode)
 
-	vlog.Infof("query applyment by business code: %s", businessCode)
+	vlog.Infof("query applyment by business code | business_code: %s", businessCode)
 
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
@@ -53,7 +53,7 @@ func (c *Apply4SubClient) QueryApplymentByBusinessCode(ctx context.Context, busi
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("query applyment by business code response: %s", respBody)
+	vlog.Infof("query applyment by business code response | body: %s", respBody)
 
 	var resp ApplymentStatusResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {
@@ -70,7 +70,7 @@ func (c *Apply4SubClient) QueryApplymentByApplymentID(ctx context.Context, apply
 	// 构建URL
 	url := fmt.Sprintf(ApplymentQueryByApplymentIDURL, applymentID)
 
-	vlog.Infof("query applyment by applyment id: %d", applymentID)
+	vlog.Infof("query applyment by applyment id | applyment_id: %d", applymentID)
 
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
@@ -82,7 +82,7 @@ func (c *Apply4SubClient) QueryApplymentByApplymentID(ctx context.Context, apply
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("query applyment by applyment id response: %s", respBody)
+	vlog.Infof("query applyment by applyment id response | body: %s", respBody)
 
 	var resp ApplymentStatusResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {

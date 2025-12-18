@@ -40,16 +40,16 @@ func (c *PartnerJsApiClient) CloseOrder(ctx context.Context, subMchID, outTradeN
 		OutTradeNo: core.String(outTradeNo),
 	}
 
-	vlog.Infof("partner jsapi close order, subMchID: %s, outTradeNo: %s", subMchID, outTradeNo)
+	vlog.Infof("partner jsapi close order | sub_mch_id: %s | out_trade_no: %s", subMchID, outTradeNo)
 
 	// 发送请求
 	result, err := c.jsapiApi.CloseOrder(ctx, req)
 	if err != nil {
-		vlog.Errorf("close order error: %v", err)
+		vlog.Errorf("close order error | err: %v", err)
 		return err
 	}
 
-	vlog.Infof("partner jsapi close order response status: %d", result.Response.StatusCode)
+	vlog.Infof("partner jsapi close order response | status_code: %d", result.Response.StatusCode)
 
 	if result.Response.StatusCode != 204 {
 		return fmt.Errorf("close order failed with status code: %d", result.Response.StatusCode)

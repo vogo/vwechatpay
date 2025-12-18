@@ -38,7 +38,7 @@ func (c *CapitalClient) QueryCities(ctx context.Context, provinceCode int) (*Cit
 	// 检查缓存
 	if c.cityCache != nil {
 		if cityResp, ok := c.cityCache[provinceCode]; ok {
-			vlog.Infof("using city cache for province code: %d", provinceCode)
+			vlog.Infof("using city cache | province_code: %d", provinceCode)
 			return cityResp, nil
 		}
 	}
@@ -46,7 +46,7 @@ func (c *CapitalClient) QueryCities(ctx context.Context, provinceCode int) (*Cit
 	// 构建URL
 	url := fmt.Sprintf(CitiesURL, provinceCode)
 
-	vlog.Infof("query cities for province code %d: %s", provinceCode, url)
+	vlog.Infof("query cities | province_code: %d | url: %s", provinceCode, url)
 
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
@@ -58,7 +58,7 @@ func (c *CapitalClient) QueryCities(ctx context.Context, provinceCode int) (*Cit
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("query cities response: %s", respBody)
+	vlog.Infof("query cities response | body: %s", respBody)
 
 	var resp CityResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {
@@ -82,6 +82,6 @@ func (c *CapitalClient) ClearCityCache(provinceCode int) {
 		vlog.Info("all city cache cleared")
 	} else if c.cityCache != nil {
 		delete(c.cityCache, provinceCode)
-		vlog.Infof("city cache for province code %d cleared", provinceCode)
+		vlog.Infof("city cache cleared | province_code: %d", provinceCode)
 	}
 }

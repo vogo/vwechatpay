@@ -50,19 +50,19 @@ func NewManager(cfg *Config) (*Manager, error) {
 	var err error
 	mgr.merchantPrivateKey, err = loadPrivateKey(cfg)
 	if err != nil {
-		vlog.Errorf("load merchant private key error: %v", err)
+		vlog.Errorf("load merchant private key error | err: %v", err)
 		return nil, err
 	}
 
 	mgr.merchantCert, err = loadCert(cfg)
 	if err != nil {
-		vlog.Errorf("load merchant cert error: %v", err)
+		vlog.Errorf("load merchant cert error | err: %v", err)
 		return nil, err
 	}
 
 	mgr.Client, err = buildWechatPayClient(cfg, mgr.merchantPrivateKey)
 	if err != nil {
-		vlog.Errorf("build wechat pay client error: %v", err)
+		vlog.Errorf("build wechat pay client error | err: %v", err)
 		return nil, err
 	}
 

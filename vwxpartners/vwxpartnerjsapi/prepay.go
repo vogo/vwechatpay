@@ -98,13 +98,13 @@ func (c *PartnerJsApiClient) Prepay(ctx context.Context,
 	}
 
 	reqData, _ := json.Marshal(req)
-	vlog.Infof("partner jsapi prepay request: %s", reqData)
+	vlog.Infof("partner jsapi prepay request | body: %s", reqData)
 
 	resp, result, err := c.jsapiApi.Prepay(ctx, req)
 	if err != nil {
 		errMsg := fmt.Sprintf("%v", err)
 
-		vlog.Errorf("partner jsapi prepay error: %v", errMsg)
+		vlog.Errorf("partner jsapi prepay error | err: %v", errMsg)
 
 		if strings.Contains(errMsg, "ORDERPAID") &&
 			strings.Contains(errMsg, "订单已支付") {
@@ -114,7 +114,7 @@ func (c *PartnerJsApiClient) Prepay(ctx context.Context,
 		return nil, err
 	}
 
-	vlog.Infof("partner jsapi prepay response: %s", vjson.EnsureMarshal(resp))
+	vlog.Infof("partner jsapi prepay response | body: %s", vjson.EnsureMarshal(resp))
 
 	if result.Response.StatusCode != 200 {
 		return nil, fmt.Errorf("prepay failed with status code: %d", result.Response.StatusCode)
@@ -131,7 +131,7 @@ func (c *PartnerJsApiClient) Prepay(ctx context.Context,
 	timeStamp := fmt.Sprintf("%d", time.Now().Unix())
 	nonceStr, err := utils.GenerateNonce()
 	if err != nil {
-		vlog.Errorf("generate nonce error: %v", err)
+		vlog.Errorf("generate nonce error | err: %v", err)
 		return nil, err
 	}
 	packageStr := fmt.Sprintf("prepay_id=%s", prepayID)
@@ -143,7 +143,7 @@ func (c *PartnerJsApiClient) Prepay(ctx context.Context,
 	// 计算签名
 	signature, err := c.mgr.Sign(message)
 	if err != nil {
-		vlog.Errorf("sign error: %v", err)
+		vlog.Errorf("sign error | err: %v", err)
 		return nil, err
 	}
 

@@ -37,16 +37,16 @@ func (s *JsApiClient) QueryOrderById(ctx context.Context, transactionId string) 
 		Mchid:         core.String(s.mgr.Config.MerchantID),
 	}
 
-	vlog.Infof("jsapi query order, transactionId: %s", transactionId)
+	vlog.Infof("jsapi query order | transaction_id: %s", transactionId)
 
 	// 发送请求
 	resp, result, err := s.jsApi.QueryOrderById(ctx, req)
 	if err != nil {
-		vlog.Errorf("query order by id error: %v", err)
+		vlog.Errorf("query order by id error | err: %v", err)
 		return nil, err
 	}
 
-	vlog.Infof("jsapi query order response: %s", vjson.EnsureMarshal(resp))
+	vlog.Infof("jsapi query order response | body: %s", vjson.EnsureMarshal(resp))
 
 	if result.Response.StatusCode != 200 {
 		return nil, fmt.Errorf("query order by id failed with status code: %d", result.Response.StatusCode)
@@ -64,16 +64,16 @@ func (s *JsApiClient) QueryOrderByOutTradeNo(ctx context.Context, outTradeNo str
 		Mchid:      core.String(s.mgr.Config.MerchantID),
 	}
 
-	vlog.Infof("jsapi query request, outTradeNo: %s", outTradeNo)
+	vlog.Infof("jsapi query request | out_trade_no: %s", outTradeNo)
 
 	// 发送请求
 	resp, result, err := s.jsApi.QueryOrderByOutTradeNo(ctx, req)
 	if err != nil {
-		vlog.Errorf("query order by out trade no error: %v", err)
+		vlog.Errorf("query order by out trade no error | err: %v", err)
 		return nil, err
 	}
 
-	vlog.Infof("jsapi query order response: %s", vjson.EnsureMarshal(resp))
+	vlog.Infof("jsapi query order response | body: %s", vjson.EnsureMarshal(resp))
 
 	if result.Response.StatusCode != 200 {
 		return nil, fmt.Errorf("query order by out trade no failed with status code: %d", result.Response.StatusCode)

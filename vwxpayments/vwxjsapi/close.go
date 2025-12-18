@@ -38,16 +38,16 @@ func (s *JsApiClient) CloseOrder(ctx context.Context, outTradeNo string) error {
 		OutTradeNo: core.String(outTradeNo),
 	}
 
-	vlog.Infof("jsapi close order, outTradeNo: %s", outTradeNo)
+	vlog.Infof("jsapi close order | out_trade_no: %s", outTradeNo)
 
 	// 发送请求
 	result, err := s.jsApi.CloseOrder(ctx, req)
 	if err != nil {
-		vlog.Errorf("close order error: %v", err)
+		vlog.Errorf("close order error | err: %v", err)
 		return err
 	}
 
-	vlog.Infof("jsapi close order response status: %d", result.Response.StatusCode)
+	vlog.Infof("jsapi close order response | status_code: %d", result.Response.StatusCode)
 
 	// 关单成功返回204状态码
 	if result.Response.StatusCode != 204 {

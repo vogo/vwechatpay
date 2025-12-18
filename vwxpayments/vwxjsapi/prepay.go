@@ -58,13 +58,13 @@ func (s *JsApiClient) Prepay(ctx context.Context,
 
 	reqData, _ := json.Marshal(prepayRequest)
 
-	vlog.Infof("jsapi prepay request: %s", reqData)
+	vlog.Infof("jsapi prepay request | body: %s", reqData)
 
 	resp, result, err := s.jsApi.PrepayWithRequestPayment(ctx, prepayRequest)
 	if err != nil {
 		errMsg := fmt.Sprintf("%v", err)
 
-		vlog.Errorf("jsapi prepay failed: %s", errMsg)
+		vlog.Errorf("jsapi prepay failed | err: %s", errMsg)
 
 		if strings.Contains(errMsg, "ORDERPAID") &&
 			strings.Contains(errMsg, "订单已支付") {
@@ -74,7 +74,7 @@ func (s *JsApiClient) Prepay(ctx context.Context,
 		return nil, err
 	}
 
-	vlog.Infof("jsapi prepay response: %s", vjson.EnsureMarshal(resp))
+	vlog.Infof("jsapi prepay response | body: %s", vjson.EnsureMarshal(resp))
 
 	if result.Response.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("jsapi prepay failed, status code: %d", result.Response.StatusCode)

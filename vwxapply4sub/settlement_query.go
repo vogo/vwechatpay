@@ -62,7 +62,7 @@ func (c *Apply4SubClient) QuerySettlement(ctx context.Context, subMchID string) 
 	// 构建URL
 	url := fmt.Sprintf(QuerySettlementURL, subMchID)
 
-	vlog.Infof("query settlement: sub_mchid=%s", subMchID)
+	vlog.Infof("query settlement | sub_mch_id: %s", subMchID)
 
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
@@ -74,7 +74,7 @@ func (c *Apply4SubClient) QuerySettlement(ctx context.Context, subMchID string) 
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("query settlement response: %s", respBody)
+	vlog.Infof("query settlement response | body: %s", respBody)
 
 	var resp SettlementInfoResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {

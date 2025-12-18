@@ -40,7 +40,7 @@ func (c *Apply4SubClient) SubmitApplyment(ctx context.Context, req *ApplymentReq
 		return nil, fmt.Errorf("marshal request body error: %w", err)
 	}
 
-	vlog.Infof("submit applyment: %s", reqBody)
+	vlog.Infof("submit applyment | body: %s", reqBody)
 
 	result, err := c.mgr.Client.Post(ctx, ApplymentURL, bytes.NewBuffer(reqBody))
 	if err != nil {
@@ -52,7 +52,7 @@ func (c *Apply4SubClient) SubmitApplyment(ctx context.Context, req *ApplymentReq
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("submit applyment response: %s", respBody)
+	vlog.Infof("submit applyment response | body: %s", respBody)
 
 	var resp ApplymentResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {

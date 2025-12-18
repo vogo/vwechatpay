@@ -41,7 +41,7 @@ type BalanceQueryResponse struct {
 // 商户可以通过该接口查询账户的实时余额
 // 参考: https://pay.weixin.qq.com/doc/v3/partner/4012720926
 func (c *MchBalanceClient) QueryBalance(ctx context.Context, accountType AccountType) (*BalanceQueryResponse, error) {
-	vlog.Infof("query balance for account type: %s", accountType)
+	vlog.Infof("query balance | account_type: %s", accountType)
 
 	// 构建请求URL
 	url := fmt.Sprintf("https://api.mch.weixin.qq.com/v3/merchant/fund/balance/%s", accountType)
@@ -57,7 +57,7 @@ func (c *MchBalanceClient) QueryBalance(ctx context.Context, accountType Account
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("query balance response: %s", respBody)
+	vlog.Infof("query balance response | response: %s", respBody)
 
 	var resp BalanceQueryResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {

@@ -89,7 +89,7 @@ func (c *Apply4SubClient) ModifySettlement(ctx context.Context, subMchID string,
 		return nil, fmt.Errorf("marshal request body error: %w", err)
 	}
 
-	vlog.Infof("modify settlement: %s", reqBody)
+	vlog.Infof("modify settlement | body: %s", reqBody)
 
 	result, err := c.mgr.Client.Post(ctx, url, bytes.NewBuffer(reqBody))
 	if err != nil {
@@ -101,7 +101,7 @@ func (c *Apply4SubClient) ModifySettlement(ctx context.Context, subMchID string,
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("modify settlement response: %s", respBody)
+	vlog.Infof("modify settlement response | body: %s", respBody)
 
 	var resp ModifySettlementResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {
@@ -119,7 +119,7 @@ func (c *Apply4SubClient) QueryModifySettlement(ctx context.Context, subMchID, a
 	// 构建URL
 	url := fmt.Sprintf(QueryModifySettlementURL, subMchID, applicationNo)
 
-	vlog.Infof("query modify settlement: %s", url)
+	vlog.Infof("query modify settlement | url: %s", url)
 
 	result, err := c.mgr.Client.Get(ctx, url)
 	if err != nil {
@@ -131,7 +131,7 @@ func (c *Apply4SubClient) QueryModifySettlement(ctx context.Context, subMchID, a
 		return nil, fmt.Errorf("read response body error: %w", err)
 	}
 
-	vlog.Infof("query modify settlement response: %s", respBody)
+	vlog.Infof("query modify settlement response | body: %s", respBody)
 
 	var resp QueryModifySettlementResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {
