@@ -17,6 +17,7 @@
 ```
 ├── vwxpayments     # 支付相关功能
 │   ├── vwxjsapi    # JSAPI支付（公众号、小程序支付）
+│   ├── vwxnative   # Native支付（扫码支付）
 │   └── vwxapp      # APP支付
 ├── vwxpartners     # 服务商模式相关功能
 │   ├── vwxpartnerjsapi  # 服务商JSAPI支付
@@ -100,6 +101,37 @@ if err != nil {
 
 // payParams 包含了前端调起支付所需的参数
 // 返回给前端，用于调起微信支付
+```
+
+### Native支付（扫码支付）
+
+```go
+// 创建Native支付客户端
+nativeClient := vwxnative.NewNativeClient(mgr)
+
+// 发起预支付（无需 OpenID）
+ctx := context.Background()
+result, err := nativeClient.Prepay(
+    ctx,
+    "",   // AppID，传空则使用配置中的 AppID
+    100,  // 金额，单位：分
+    "商户订单号",
+    "商品描述",
+    "附加数据",
+    "回调通知URL",
+    time.Now().Add(30 * time.Minute),  // 订单过期时间
+)
+
+// 处理支付结果
+if err != nil {
+    // 当订单已支付时，err 为 vwxnative.ErrOrderPaid
+    if errors.Is(err, vwxnative.ErrOrderPaid) {
+        // 处理订单已支付的情况
+    }
+    // 处理其他错误
+}
+
+// result.CodeURL 为二维码链接，商户据此生成二维码供用户扫码支付
 ```
 
 ### 查询订单
