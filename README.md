@@ -134,6 +134,28 @@ if err != nil {
 // result.CodeURL 为二维码链接，商户据此生成二维码供用户扫码支付
 ```
 
+Native 支付同样支持订单查询、关闭与回调通知处理：
+
+```go
+// 通过微信支付订单号查询
+transaction, err := nativeClient.QueryOrderById(ctx, "微信支付订单号")
+
+// 或通过商户订单号查询
+transaction, err := nativeClient.QueryOrderByOutTradeNo(ctx, "商户订单号")
+
+// 关闭未支付的订单
+err := nativeClient.CloseOrder(ctx, "商户订单号")
+
+// 解析支付回调通知（包含 HTTP 头验签 + 解密）
+notifyReq, notifyContent, err := nativeClient.NativeNotifyParse(
+    func(key string) string {
+        // 从HTTP请求头中获取对应的值
+        return r.Header.Get(key)
+    },
+    requestBody,  // HTTP请求体
+)
+```
+
 ### 查询订单
 
 ```go

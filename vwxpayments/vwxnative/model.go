@@ -30,3 +30,11 @@ type NativePrepayResult struct {
 	PrepayID *string `json:"prepayId"`
 	PayNo    *string `json:"payNo"`
 }
+
+type wechatPayHeader struct {
+	RequestID string
+	Serial    string
+	Signature string
+	Nonce     string
+	Timestamp int64
+}
